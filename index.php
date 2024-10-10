@@ -3,7 +3,7 @@ include 'includes/header.php';
 ?>
 
 <body>
-    <!-- Preloader -->
+    <!-- Preloader test-->
     <div id="preloader">
         <div id="status">&nbsp;</div>
     </div>
