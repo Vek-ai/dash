@@ -1,11 +1,11 @@
 <?php include 'includes/header.php'; ?>
 
-    <!-- Le styles -->
-    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
-   <!--  <link rel="stylesheet" href="assets/css/style.css"> -->
-    <link rel="stylesheet" href="assets/css/signin.css">
-    <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="assets/ico/minus.png">
+<!-- Le styles -->
+<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+<!--  <link rel="stylesheet" href="assets/css/style.css"> -->
+<link rel="stylesheet" href="assets/css/signin.css">
+<!-- Fav and touch icons -->
+<link rel="shortcut icon" href="assets/ico/minus.png">
 
 <body>
     <!-- Preloader -->
@@ -32,7 +32,7 @@
                 <div class="col-md-4 col-md-offset-4">
                     <div class="account-box" style="z-index: 10000;">
 
-                        <form id="loginForm" >
+                        <form id="loginForm">
                             <div class="form-group">
                                 <!-- <a href="#" class="pull-right label-forgot">Forgot email?</a> -->
                                 <label for="inputUsernameEmail">Username</label>
@@ -51,10 +51,10 @@
                                 Log In
                             </button>
                         </form>
-                        
+
                         <a class="forgotLnk" href="#"></a>
                         <div class="or-box">
-                          
+
                             <center><span class="text-center login-with">Login or <b>Sign Up</b></span></center>
                             <div class="row">
                                 <div class="col-md-6 row-block">
@@ -64,16 +64,18 @@
                                 <div class="col-md-6 row-block">
                                     <a href="#" class="btn btn-twitter btn-block">
                                         <span class="entypo-twitter space-icon"></span>Twitter</a>
-                                        
+
                                 </div>
 
                             </div>
                             <div style="margin-top:25px" class="row">
                                 <div class="col-md-6 row-block">
-                                    <a href="#" class="btn btn-google btn-block"><span class="entypo-gplus space-icon"></span>Google +</a>
+                                    <a href="#" class="btn btn-google btn-block"><span
+                                            class="entypo-gplus space-icon"></span>Google +</a>
                                 </div>
                                 <div class="col-md-6 row-block">
-                                    <a href="#" class="btn btn-instagram btn-block"><span class="entypo-instagrem space-icon"></span>Instagram</a>
+                                    <a href="#" class="btn btn-instagram btn-block"><span
+                                            class="entypo-instagrem space-icon"></span>Instagram</a>
                                 </div>
 
                             </div>
@@ -119,77 +121,77 @@
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="assets/js/map/gmap3.js"></script>
     <script type="text/javascript">
-    $(function() {
+        $(function () {
 
-        $("#test1").gmap3({
-            marker: {
-                latLng: [-7.782893, 110.402645],
-                options: {
-                    draggable: true
-                },
-                events: {
-                    dragend: function(marker) {
-                        $(this).gmap3({
-                            getaddress: {
-                                latLng: marker.getPosition(),
-                                callback: function(results) {
-                                    var map = $(this).gmap3("get"),
-                                        infowindow = $(this).gmap3({
-                                            get: "infowindow"
-                                        }),
-                                        content = results && results[1] ? results && results[1].formatted_address : "no address";
-                                    if (infowindow) {
-                                        infowindow.open(map, marker);
-                                        infowindow.setContent(content);
-                                    } else {
-                                        $(this).gmap3({
-                                            infowindow: {
-                                                anchor: marker,
-                                                options: {
-                                                    content: content
+            $("#test1").gmap3({
+                marker: {
+                    latLng: [-7.782893, 110.402645],
+                    options: {
+                        draggable: true
+                    },
+                    events: {
+                        dragend: function (marker) {
+                            $(this).gmap3({
+                                getaddress: {
+                                    latLng: marker.getPosition(),
+                                    callback: function (results) {
+                                        var map = $(this).gmap3("get"),
+                                            infowindow = $(this).gmap3({
+                                                get: "infowindow"
+                                            }),
+                                            content = results && results[1] ? results && results[1].formatted_address : "no address";
+                                        if (infowindow) {
+                                            infowindow.open(map, marker);
+                                            infowindow.setContent(content);
+                                        } else {
+                                            $(this).gmap3({
+                                                infowindow: {
+                                                    anchor: marker,
+                                                    options: {
+                                                        content: content
+                                                    }
                                                 }
-                                            }
-                                        });
+                                            });
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }
+                },
+                map: {
+                    options: {
+                        zoom: 15
                     }
                 }
-            },
-            map: {
-                options: {
-                    zoom: 15
-                }
-            }
-        });
+            });
 
-    });
+        });
     </script>
 
     <script>
         $(document).ready(function () {
             $('#loginForm').submit(function (e) {
-                e.preventDefault(); 
-                var formData = $(this).serialize(); 
+                e.preventDefault();
+                var formData = $(this).serialize();
                 $.ajax({
                     type: 'POST',
                     url: 'php/user_login.php',
                     data: formData,
                     success: function (response) {
-                        if(response === "success"){
-                          window.location.href = "index.php";
-                        }else{
-                          alert(response);
+                        if (response === "success") {
+                            window.location.href = "index.php";
+                        } else {
+                            alert("Error: " + response);  // Display error message in alert
                         }
-                        
                     },
                     error: function (xhr, status, error) {
-                        console.error(xhr.responseText);
+                        alert("An error occurred: " + xhr.responseText);  // Display server-side error in alert
                     }
                 });
             });
         });
+
     </script>
 
 
