@@ -1,7 +1,7 @@
 <?php
 // Database connection details
 $servername = "localhost"; 
-$username = " benguetf_safesky"; 
+$username = "benguetf_safesky"; 
 $password_db = "Safesky@123"; 
 $dbname = "benguetf_safesky"; 
 
