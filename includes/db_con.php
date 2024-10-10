@@ -1,9 +1,9 @@
 <?php
 // Database connection details
 $servername = "localhost"; 
-$username = "root"; 
-$password_db = ""; 
-$dbname = "safesky_db"; 
+$username = " benguetf_safesky"; 
+$password_db = "Safesky@123"; 
+$dbname = "benguetf_safesky"; 
 
 // Create connection
 $conn = new mysqli($servername, $username, $password_db, $dbname);
