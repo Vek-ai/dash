@@ -98,12 +98,12 @@
                         <div class="row">
                             <!-- LEFT ROW -->
                             <div class="col-md-8">
-                                <?php include 'page_componenets/drone_surveillance/top_left_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/top_left_pannel.php'; ?>
                             </div>
 
                             <!-- RIGHT ROW -->
                             <div class="col-md-4">
-                                <?php include 'page_componenets/drone_surveillance/top_right_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/top_right_pannel.php'; ?>
                             </div>
                         </div>
                         <!-- /END OF TOP ROW -->
@@ -112,12 +112,12 @@
                         <div class="row">
                             <!-- LEFT ROW -->
                             <div class="col-md-8">
-                                <?php include 'page_componenets/drone_surveillance/bottom_left_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/bottom_left_pannel.php'; ?>
                             </div>
 
                             <!-- RIGHT ROW -->
                             <div class="col-md-4">
-                                <?php include 'page_componenets/drone_surveillance/bottom_right_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/bottom_right_pannel.php'; ?>
                             </div>
                         </div>
                         <!-- /END OF BOTTOM ROW -->

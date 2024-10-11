@@ -30,7 +30,7 @@
 </div>
 
 <div id="myModal" class="modal">
-	<?php include 'page_componenets\manage_airports\add_airport.php'; ?>
+	<?php include 'page_components\manage_airports\add_airport.php'; ?>
 </div>
 
 <script>
