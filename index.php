@@ -92,13 +92,6 @@ include 'includes/header.php';
     </div>
     <!-- END OF PAPER WRAP -->
 
-    <!-- RIGHT SLIDER CONTENT -->
-    <div class="sb-slidebar sb-right">
-        <div class="right-wrapper">
-            <div class="row"></div>
-        </div>
-    </div>
-    <!-- END OF RIGHT SLIDER CONTENT -->
 
     <!-- JAVASCRIPT INCLUDES -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
@@ -115,3 +108,60 @@ include 'includes/header.php';
     <script type="text/javascript" src="assets/js/map/gmap3.js"></script>
     <script src="assets/js/jhere-custom.js"></script>
 </body>
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Get references to buttons and components
+		const airportMarkersBtn = document.getElementById('airportMarkers');
+		const droneMarkersBtn = document.getElementById('droneMarkers');
+		const flightPlanMarkersBtn = document.getElementById('flightPlanMarkers');
+
+		const airportContent = document.getElementById('airportContent');
+		const droneContent = document.getElementById('droneContent');
+		const flightPlanContent = document.getElementById('flightPlanContent');
+
+		// Function to hide all components
+		function hideAllComponents() {
+			airportContent.style.display = 'none';
+			droneContent.style.display = 'none';
+			flightPlanContent.style.display = 'none';
+		}
+
+		// Function to remove active class from all buttons
+		function removeActiveClass() {
+			airportMarkersBtn.classList.remove('active');
+			droneMarkersBtn.classList.remove('active');
+			flightPlanMarkersBtn.classList.remove('active');
+		}
+
+		// Show only airport content and add active class
+		airportMarkersBtn.addEventListener('click', function () {
+			hideAllComponents();
+			airportContent.style.display = 'block';
+			removeActiveClass();
+			airportMarkersBtn.classList.add('active');  // Add active class to clicked button
+		});
+
+		// Show only drone content and add active class
+		droneMarkersBtn.addEventListener('click', function () {
+			hideAllComponents();
+			droneContent.style.display = 'block';
+			removeActiveClass();
+			droneMarkersBtn.classList.add('active');  // Add active class to clicked button
+		});
+
+		// Show only drone content and add active class
+		flightPlanMarkersBtn.addEventListener('click', function () {
+			hideAllComponents();
+			flightPlanContent.style.display = 'block';
+			removeActiveClass();
+			flightPlanMarkersBtn.classList.add('active');  // Add active class to clicked button
+		});
+		// Initial setup: Show airport content and set the airport markers button active
+		hideAllComponents();
+		airportContent.style.display = 'block';
+		airportMarkersBtn.classList.add('active'); // Set the default active button
+	});
+
+</script>

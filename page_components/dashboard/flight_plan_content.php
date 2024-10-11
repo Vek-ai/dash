@@ -1,5 +1,5 @@
 <style>
-	.btn-airport-cards {
+	.btn-flightPlan-cards {
 		padding-left: 20px;
 		width: 300px;
 		height: 150px;
@@ -11,7 +11,7 @@
 		transition: transform 0.3s ease, background-color 0.3s ease;
 	}
 
-	.btn-airport-cards:hover {
+	.btn-flightPlan-cards:hover {
 		background-color: #e0e0e0;
 		transform: scale(1.05);
         font-weight: bold;
@@ -27,7 +27,7 @@
 		<button class="btn-primary" id="myBtn" style="margin-left: 50px; padding: 10px 20px; border: none; border-radius: 10px;">Add Flight Plan</button>
 	</div>
 
-	<div id="airportResult" style="padding-top: 10px;">
+	<div id="planResult" style="padding-top: 10px;">
 		<!-- AIRPORTS AJAX GET RESULTS WILL DISPLAY HERE -->
 	</div>
 </div>
@@ -66,33 +66,33 @@
 
 	// AIRPORTS GET AJAX
 	$(document).ready(function () {
-    // Fetch airports and populate the table
+    // Fetch flightPlans and populate the table
     $.ajax({
         type: 'GET',
-        url: 'php/crud/airports/get_airports.php', // The PHP file that fetches all airports
+        url: 'php/crud/flight_plans/get_flight_plans.php', // The PHP file that fetches all flightPlans
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
-                var airportResult = $('#airportResult'); // The container for the buttons
-                var airports = response.data;
+                var planResult = $('#planResult'); // The container for the buttons
+                var flightPlans = response.data;
 
                 // Clear any existing buttons
-                airportResult.empty();
+                planResult.empty();
 
-                // Loop through each airport and append buttons to the div
-                airports.forEach(function (airport) {
+                // Loop through each flightPlan and append buttons to the div
+                flightPlans.forEach(function (flightPlan) {
                     var button = `
-                        <button class="btn-airport-cards" style="margin-left: 10px;" id="airport-${airport.id}">
-                            <p class="pull-left">${airport.name}</p>
+                        <button class="btn-flightPlan-cards" style="margin-left: 10px;" id="flightPlan-${flightPlan.id}">
+                            <p class="pull-left">${flightPlan.plan_name}</p>
                         </button>
                     `;
 
-                    // Append each button to the airportResult div
-                    airportResult.append(button);
+                    // Append each button to the planResult div
+                    planResult.append(button);
 
                     // Add any additional functionality to the buttons (e.g., dropdowns)
-                    var el = document.querySelector(`#airport-${airport.id}`).parentNode;
-                    var btn = el.querySelector(`#airport-${airport.id}`);
+                    var el = document.querySelector(`#flightPlan-${flightPlan.id}`).parentNode;
+                    var btn = el.querySelector(`#flightPlan-${flightPlan.id}`);
                     var menu = el.querySelector('.more-menu');
                     var visible = false;
 
@@ -124,11 +124,11 @@
                 // Initialize footable if needed after appending rows (if you're using a table)
                 $('#footable-res2').footable();
             } else {
-                alert('Failed to load airports.');
+                alert('Failed to load flightPlans.');
             }
         },
         error: function () {
-            alert('Error fetching airports.');
+            alert('Error fetching flightPlans.');
         }
     });
 });
