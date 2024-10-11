@@ -1,8 +1,4 @@
 <?php
-// Enable error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 // Include the database connection file
 include '../../../includes/db_con.php';
@@ -27,8 +23,20 @@ try {
     // Decode the JSON markers field
     $markers = json_decode($row['markers'], true);
 
-    // Send the decoded markers data back as a JSON response
-    echo json_encode(['status' => 'success', 'data' => $markers]);
+    // Create an array to hold the markers with "Marker {number}" as the key
+    $numberedMarkers = [];
+
+    // Loop through the markers and add "Marker {number}" as the key
+    foreach ($markers as $index => $marker) {
+        $markerNumber = $index + 1; // Start marker number from 1
+        $numberedMarkers["Marker $markerNumber"] = [
+            'latitude' => $marker['latitude'],
+            'longitude' => $marker['longitude']
+        ];
+    }
+
+    // Send the markers data with "Marker {number}" as the key in JSON format
+    echo json_encode(['status' => 'success', 'data' => $numberedMarkers]);
 
     // Close the statement
     $stmt->close();
