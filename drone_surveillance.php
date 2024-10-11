@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Include the drone data file
+include('php\crud\drones\get_specific_drone.php');
 ?>
 
 <!-- STYLE -->

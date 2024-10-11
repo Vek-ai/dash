@@ -1,7 +1,4 @@
-<?php
-// Include the drone data file
-include('php\crud\drones\get_specific_drone.php');
-?>
+
 
 <style>
 	.real-time-view {
