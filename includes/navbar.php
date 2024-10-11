@@ -1,9 +1,9 @@
 <?php     
-    // session_start();
-    // if (!isset($_SESSION['userid'])) {
-    //     header('Location: login.php');
-    //     exit();
-    // }
+    session_start();
+    if (!isset($_SESSION['userid'])) {
+        header('Location: login.php');
+        exit();
+    }
 ?>
 <nav role="navigation" class="navbar navbar-static-top">
         <div class="container-fluid">
