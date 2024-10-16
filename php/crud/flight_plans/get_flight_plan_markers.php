@@ -1,5 +1,4 @@
 <?php
-
 // Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -28,20 +27,16 @@ try {
     // Decode the JSON markers field
     $markers = json_decode($row['markers'], true);
 
-    // Create an array to hold the markers with "Marker {number}" as the key
-    $numberedMarkers = [];
-
-    // Loop through the markers and add "Marker {number}" as the key
-    foreach ($markers as $index => $marker) {
-        $markerNumber = $index + 1; // Start marker number from 1
-        $numberedMarkers["Marker $markerNumber"] = [
-            'latitude' => $marker['latitude'],
-            'longitude' => $marker['longitude']
-        ];
+    // If the markers data is properly formatted
+    if (is_array($markers)) {
+        foreach ($markers as $index => &$marker) {
+            // Assign a name based on the index, e.g., "Marker 1", "Marker 2", etc.
+            $marker['name'] = 'Marker ' . ($index + 1);
+        }
     }
 
-    // Send the markers data with "Marker {number}" as the key in JSON format
-    echo json_encode(['status' => 'success', 'data' => $numberedMarkers]);
+    // Send the updated markers data back as a JSON response
+    echo json_encode(['status' => 'success', 'data' => $markers]);
 
     // Close the statement
     $stmt->close();
@@ -53,4 +48,5 @@ try {
 
 // Close the database connection
 $conn->close();
+
 ?>
