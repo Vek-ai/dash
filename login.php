@@ -116,7 +116,7 @@
     <script type="text/javascript" src="assets/js/load.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="assets/js/map/gmap3.js"></script>
     <script type="text/javascript">
     $(function() {
@@ -168,28 +168,28 @@
     </script>
 
     <script>
-$(document).ready(function () {
-    $('#loginForm').submit(function (e) {
-        e.preventDefault(); 
-        var formData = $(this).serialize(); 
-        $.ajax({
-            type: 'POST',
-            url: 'php/user_login.php',
-            data: formData,
-            success: function (response) {
-                if(response === "success"){
-                    window.location.href = "index.php";
-                } else {
-                    alert("Error: " + response);  // Display error message in alert
-                }
-            },
-            error: function (xhr, status, error) {
-                alert("An error occurred: " + xhr.responseText);  // Display server-side error in alert
-            }
+        $(document).ready(function () {
+            $('#loginForm').submit(function (e) {
+                e.preventDefault(); 
+                var formData = $(this).serialize(); 
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/user_login.php',
+                    data: formData,
+                    success: function (response) {
+                        if(response === "success"){
+                          window.location.href = "index.php";
+                        }else{
+                          alert(response);
+                        }
+                        
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
         });
-    });
-});
-
     </script>
 
 

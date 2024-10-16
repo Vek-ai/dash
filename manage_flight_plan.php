@@ -5,7 +5,7 @@
  
     <!-- Specific to the page -->
     <!-- Le styles -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
     <!-- Style -->
     <link rel="stylesheet" href="assets/js/button/ladda/ladda.min.css">
     <link rel="stylesheet" href="assets/js/dataTable/lib/jquery.dataTables/css/DT_bootstrap.css" />
@@ -85,7 +85,7 @@
                         <!-- ADD DRONE -->
                         <div class="row">
                             <div class="col-md-12" style="padding: 0px 10px;">
-                                <?php include 'page_components/manage_flight_plan/add_flight_plan.php'; ?>
+                                <?php include 'page_componenets\manage_flight_plan\add_flight_plan.php'; ?>
                             </div>
                             
                         </div>
@@ -94,7 +94,7 @@
                         <!-- DRONE LIST -->
                         <div class="row">
                             <div class="col-md-12" style="padding: 0px 10px;">
-                                <?php include 'page_components/manage_flight_plan/flight_plan_list.php'; ?>
+                                <?php include 'page_componenets\manage_flight_plan\flight_plan_list.php'; ?>
                             </div>
                         </div>
                         <!-- /END OF DRONE LIST -->

@@ -1,9 +1,10 @@
 <?php
 include 'includes/header.php';
+include 'includes/functions.php';
 ?>
 
 <body>
-    <!-- Preloader test-->
+    <!-- Preloader -->
     <div id="preloader">
         <div id="status">&nbsp;</div>
     </div>
@@ -51,8 +52,8 @@ include 'includes/header.php';
 
                             <div class="row">
                                 <!-- MAP -->
-                                <div class="col-md-12" style="padding: 0px 10px;">
-                                    <?php include 'page_components/dashboard/map.php'; ?>
+                                <div class="col-md-12 map-container" style="padding: 0px 10px;">
+                                    <?php include 'page_componenets/dashboard/map.php'; ?>
                                 </div>
                                 <!-- /END OF MAP -->
 
@@ -60,16 +61,16 @@ include 'includes/header.php';
                                 <div class="col-md-12" style="padding: 0px 10px;">
                                     <section class="panel">
                                         <div class="panel-body">
-                                            <?php include 'page_components/dashboard/top_content.php'; ?>
+                                            <?php include 'page_componenets/dashboard/top_content.php'; ?>
 
                                             <div id="airportContent" style="display:block;">
-                                                <?php include 'page_components/dashboard/airport_content.php'; ?>
+                                                <?php include 'page_componenets/dashboard/airport_content.php'; ?>
                                             </div>
                                             <div id="droneContent" style="display:none;">
-                                                <?php include 'page_components/dashboard/drone_content.php'; ?>
+                                                <?php include 'page_componenets/dashboard/drone_content.php'; ?>
                                             </div>
                                             <div id="flightPlanContent" style="display:none;">
-                                                <?php include 'page_components/dashboard/flight_plan_content.php'; ?>
+                                                <?php include 'page_componenets/dashboard/flight_plan_content.php'; ?>
                                             </div>
                                         </div>
                                     </section>
@@ -92,9 +93,16 @@ include 'includes/header.php';
     </div>
     <!-- END OF PAPER WRAP -->
 
+    <!-- RIGHT SLIDER CONTENT -->
+    <div class="sb-slidebar sb-right">
+        <div class="right-wrapper">
+            <div class="row"></div>
+        </div>
+    </div>
+    <!-- END OF RIGHT SLIDER CONTENT -->
 
     <!-- JAVASCRIPT INCLUDES -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
     <script src="assets/js/progress-bar/src/jquery.velocity.min.js"></script>
     <script src="assets/js/progress-bar/number-pb.js"></script>
     <script src="assets/js/progress-bar/progress-app.js"></script>
@@ -104,64 +112,7 @@ include 'includes/header.php';
     <script type="text/javascript" src="assets/js/load.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="assets/js/map/gmap3.js"></script>
     <script src="assets/js/jhere-custom.js"></script>
 </body>
-
-
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		// Get references to buttons and components
-		const airportMarkersBtn = document.getElementById('airportMarkers');
-		const droneMarkersBtn = document.getElementById('droneMarkers');
-		const flightPlanMarkersBtn = document.getElementById('flightPlanMarkers');
-
-		const airportContent = document.getElementById('airportContent');
-		const droneContent = document.getElementById('droneContent');
-		const flightPlanContent = document.getElementById('flightPlanContent');
-
-		// Function to hide all components
-		function hideAllComponents() {
-			airportContent.style.display = 'none';
-			droneContent.style.display = 'none';
-			flightPlanContent.style.display = 'none';
-		}
-
-		// Function to remove active class from all buttons
-		function removeActiveClass() {
-			airportMarkersBtn.classList.remove('active');
-			droneMarkersBtn.classList.remove('active');
-			flightPlanMarkersBtn.classList.remove('active');
-		}
-
-		// Show only airport content and add active class
-		airportMarkersBtn.addEventListener('click', function () {
-			hideAllComponents();
-			airportContent.style.display = 'block';
-			removeActiveClass();
-			airportMarkersBtn.classList.add('active');  // Add active class to clicked button
-		});
-
-		// Show only drone content and add active class
-		droneMarkersBtn.addEventListener('click', function () {
-			hideAllComponents();
-			droneContent.style.display = 'block';
-			removeActiveClass();
-			droneMarkersBtn.classList.add('active');  // Add active class to clicked button
-		});
-
-		// Show only drone content and add active class
-		flightPlanMarkersBtn.addEventListener('click', function () {
-			hideAllComponents();
-			flightPlanContent.style.display = 'block';
-			removeActiveClass();
-			flightPlanMarkersBtn.classList.add('active');  // Add active class to clicked button
-		});
-		// Initial setup: Show airport content and set the airport markers button active
-		hideAllComponents();
-		airportContent.style.display = 'block';
-		airportMarkersBtn.classList.add('active'); // Set the default active button
-	});
-
-</script>
