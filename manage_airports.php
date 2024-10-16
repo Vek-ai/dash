@@ -5,7 +5,7 @@
  
     <!-- Specific to the page -->
     <!-- Le styles -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
     <!-- Style -->
     <link rel="stylesheet" href="assets/js/button/ladda/ladda.min.css">
 
