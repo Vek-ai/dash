@@ -71,7 +71,7 @@
                         <div class="row">
                         		<!-- MAP -->
                             <div class="col-md-12" style="padding: 0px 10px;">
-                                <?php include 'page_componenets/manage_airports/map.php'; ?>
+                                <?php include 'page_components/manage_airports/map.php'; ?>
                             </div>
 														<!-- /END OF MAP -->
 
@@ -79,8 +79,8 @@
                             <div class="col-md-12" style="padding: 0px 10px;">
 															<section class="panel">
 																<div class="panel-body">
-																	<?php include 'page_componenets/manage_airports/top_content.php'; ?>
-																	<?php include 'page_componenets/manage_airports/bottom_content.php'; ?>																			
+																	<?php include 'page_components/manage_airports/top_content.php'; ?>
+																	<?php include 'page_components/manage_airports/bottom_content.php'; ?>																			
 																</div>
 															</section>
                             </div>

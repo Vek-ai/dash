@@ -16,40 +16,36 @@
 </div>
 
 <script>
-  // Function to fetch flight plan markers and display in modal
   function fetchFlightPlanMarkers(flightPlanId) {
     $.ajax({
       type: 'GET',
-      url: 'php/crud/flight_plans/get_flight_plan_markers.php', // PHP file to fetch flight plan markers
-      data: { id: flightPlanId },
+      url: 'php/crud/flight_plans/get_flight_plan_markers.php', // PHP file to fetch markers
+      data: { id: flightPlanId }, // Send flight plan ID
       dataType: 'json',
       success: function (response) {
+        console.log('Response:', response); // Log the response to check if the data structure is correct
+        
         if (response.status === 'success') {
-          // Create a table for displaying markers
-          var tableHtml = '<table class="table table-striped">';
-          tableHtml += '<thead><tr><th>Marker</th><th>Latitude</th><th>Longitude</th></tr></thead><tbody>';
-          
-          // Loop through the markers and create table rows
-          $.each(response.data, function (marker, coords) {
-            tableHtml += '<tr>';
-            tableHtml += '<td>' + marker + '</td>'; // Display the marker name (e.g., "Marker 1")
-            tableHtml += '<td>' + coords.latitude + '</td>'; // Display the latitude
-            tableHtml += '<td>' + coords.longitude + '</td>'; // Display the longitude
-            tableHtml += '</tr>';
-          });
+          var markersContent = '<ul>'; // Create a list for markers
 
-          tableHtml += '</tbody></table>';
-          
-          // Populate the modal with the table
-          $('#flightPlanMarkersContent').html(tableHtml);
+          // Check the data format and loop through the markers
+          if (Array.isArray(response.data)) {
+            response.data.forEach(function(marker) {
+              markersContent += '<li>' + marker + '</li>'; // Add each marker to the list
+            });
+          } else {
+            markersContent += '<li>No markers found for this flight plan.</li>'; // Fallback message
+          }
 
-          // Show the modal
-          $('#flightPlanMarkersModal').modal('show');
+          markersContent += '</ul>';
+          $('#flightPlanMarkersContent').html(markersContent); // Populate modal content
+          $('#flightPlanMarkersModal').modal('show'); // Show the modal
         } else {
-          alert('No markers found for this flight plan.');
+          alert('Failed to load markers for the selected flight plan.');
         }
       },
-      error: function () {
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error('AJAX Error:', textStatus, errorThrown); // Log AJAX errors
         alert('Error fetching flight plan markers.');
       }
     });

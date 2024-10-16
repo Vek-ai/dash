@@ -28,15 +28,12 @@
                         </select>
                     </div>
                     <div class="col-sm-6">
-                        <a href="#clear" style="margin-left:10px;" class="pull-right btn btn-info clear-filter"
-                            title="clear filter">clear</a>
-                        <a href="#api" class="pull-right btn btn-info filter-api"
-                            title="Filter using the Filter API">filter API</a>
+                        <a href="#clear" style="margin-left:10px;" class="pull-right btn btn-info clear-filter" title="clear filter">clear</a>
+                        <a href="#api" class="pull-right btn btn-info filter-api" title="Filter using the Filter API">filter API</a>
                     </div>
                 </div>
 
-                <table id="footable-res2" class="demo tablet breakpoint no-paging footable-loaded footable"
-                    data-filter="#filter" data-filter-text-only="true">
+                <table id="footable-res2" class="demo tablet breakpoint no-paging footable-loaded footable" data-filter="#filter" data-filter-text-only="true">
                     <thead>
                         <tr>
                             <th data-toggle="true">Flight Plan Name</th>
@@ -53,8 +50,7 @@
 </section>
 
 <!-- FOR FLIGHT PLAN MARKERS MODAL -->
-<div class="modal fade" id="flightPlanMarkersModal" tabindex="-1" role="dialog"
-    aria-labelledby="flightPlanMarkersModalLabel" aria-hidden="true">
+<div class="modal fade" id="flightPlanMarkersModal" tabindex="-1" role="dialog" aria-labelledby="flightPlanMarkersModalLabel" aria-hidden="true">
     <?php include 'modals/flight_plan_marker_modal.php'; ?>
 </div>
 <!-- /END OF FLIGHT PLAN MARKERS MODAL -->
@@ -79,7 +75,7 @@
                         var row = '<tr>';
                         // Make flight plan name clickable
                         row += '<td class="flight-plan-name" data-id="' + plan.id + '">' + plan.plan_name + '</td>';
-
+                        
                         // Existing dropdown HTML
                         row += `
                         <td>
@@ -105,7 +101,7 @@
                                 </div>
                             </div>
                         </td>`;
-
+                        
                         row += '</tr>';
                         flightPlanTableBody.append(row);
                     });
@@ -169,35 +165,56 @@
         });
     });
 
+    // Function to fetch flight plan markers and display in modal
+    function fetchFlightPlanMarkers(flightPlanId) {
+        $.ajax({
+            type: 'GET',
+            url: 'php/crud/flight_plans/get_flight_plan_markers.php', // PHP file to fetch flight plan markers
+            data: { id: flightPlanId },
+            dataType: 'json',
+            success: function (response) {
+                if (response.status === 'success') {
+                    // Populate modal with markers data
+                    var modalBody = $('#flightPlanMarkersModal .modal-body');
+                    modalBody.empty();
 
+                    response.data.forEach(function (marker) {
+                        modalBody.append('<p>Marker: ' + marker.latitude + ', ' + marker.longitude + '</p>');
+                    });
+
+                    // Show the modal
+                    $('#flightPlanMarkersModal').modal('show');
+                } else {
+                    alert('No markers found for this flight plan.');
+                }
+            },
+            error: function () {
+                alert('Error fetching flight plan markers.');
+            }
+        });
+    }
 </script>
 
 <style>
     .bg-green {
-        background-color: #45B6B0;
-        /* Light green for Active */
+        background-color: #45B6B0; /* Light green for Active */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #155724;
-        /* Dark green text for contrast */
+        color: #155724; /* Dark green text for contrast */
     }
 
     .bg-red {
-        background-color: #FF6B6B;
-        /* Light red for Disabled */
+        background-color: #FF6B6B; /* Light red for Disabled */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #721c24;
-        /* Dark red text for contrast */
+        color: #721c24; /* Dark red text for contrast */
     }
 
     .bg-gray {
-        background-color: #A8BDCF;
-        /* Light gray for Suspended */
+        background-color: #A8BDCF; /* Light gray for Suspended */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #6c757d;
-        /* Dark gray text for contrast */
+        color: #6c757d; /* Dark gray text for contrast */
     }
 
     /* Additional styling as needed */

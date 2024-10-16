@@ -60,6 +60,7 @@
 		}
 	}
 
+	// DRONES GET AJAX
 // DRONES GET AJAX
 $(document).ready(function () {
     // Fetch drones and populate the table
