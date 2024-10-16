@@ -34,7 +34,7 @@
 </div>
 
 <div id="myModal" class="modal">
-    <?php include 'page_componenets\manage_airports\add_airport.php'; ?>
+    <?php include 'page_components\manage_airports\add_airport.php'; ?>
 </div>
 
 <script>
@@ -155,7 +155,7 @@
 
                         // Now send the markers data to map.php
                         $.ajax({
-                            url: 'page_componenets/dashboard/map.php', // Path to your map.php
+                            url: 'page_components/dashboard/map.php', // Path to your map.php
                             type: 'POST', // Use POST to send more complex data (like marker arrays)
                             data: { markers: markers }, // Send the markers array to map.php
                             success: function (response) {
