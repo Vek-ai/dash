@@ -60,7 +60,7 @@ include 'includes/functions.php';
                                 <!-- CONTAINER -->
                                 <div class="col-md-12" style="padding: 0px 10px;">
                                     <section class="panel">
-                                        <div class="panel-body">
+                                        <div class="panel-body">test
                                             <?php include 'page_components\dashboard\top_content.php'; ?>
 
                                             <div id="airportContent" style="display:block;">
