@@ -61,7 +61,23 @@ include 'includes/functions.php';
                                 <div class="col-md-12" style="padding: 0px 10px;">
                                     <section class="panel">
                                         <div class="panel-body">
-                                            <?php include 'page_components\dashboard\top_content.php'; ?>
+                                        <div>
+	<button class="btn-card" id="airportMarkers">
+		<p class="pull-left">Airports</p>
+	</button>
+	<button class="btn-card" id="droneMarkers" style="margin-left: 10px;">
+		<p class="pull-left">Drones</p>
+	</button>
+	<button class="btn-card" id="flightPlanMarkers" style="margin-left: 10px;">
+		<p class="pull-left">Flight Plan</p>
+	</button>
+
+	<div class="pull-right titleToggle">
+		<a class="nav-toggle-alt" href="#Gmap">
+			<span class="entypo-up-open"></span>
+		</a>
+	</div>
+</div>
 
                                             <div id="airportContent" style="display:block;">
                                                 <?php include 'page_components/dashboard/airport_content.php'; ?>
