@@ -61,9 +61,7 @@ include 'includes/functions.php';
                                 <div class="col-md-12" style="padding: 0px 10px;">
                                     <section class="panel">
                                         <div class="panel-body">
-                                            <div>
-                                                <?php include 'page_components\dashboard\top_content.php'; ?>
-                                            </div>
+                                            <?php include 'page_components/dashboard/top_content.php'; ?>
 
                                             <div id="airportContent" style="display:block;">
                                                 <?php include 'page_components/dashboard/airport_content.php'; ?>
