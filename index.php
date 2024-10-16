@@ -53,7 +53,7 @@ include 'includes/functions.php';
                             <div class="row">
                                 <!-- MAP -->
                                 <div class="col-md-12 map-container" style="padding: 0px 10px;">
-                                    <?php include 'page_components\dashboard\map.php'; ?>
+                                    <?php include 'page_componenets/dashboard/map.php'; ?>
                                 </div>
                                 <!-- /END OF MAP -->
 
@@ -61,16 +61,16 @@ include 'includes/functions.php';
                                 <div class="col-md-12" style="padding: 0px 10px;">
                                     <section class="panel">
                                         <div class="panel-body">
-                                            <?php include 'page_components\dashboard\top_content.php'; ?>
+                                            <?php include 'page_componenets/dashboard/top_content.php'; ?>
 
                                             <div id="airportContent" style="display:block;">
-                                                <?php include 'page_components/dashboard/airport_content.php'; ?>
+                                                <?php include 'page_componenets/dashboard/airport_content.php'; ?>
                                             </div>
                                             <div id="droneContent" style="display:none;">
-                                                <?php include 'page_components/dashboard/drone_content.php'; ?>
+                                                <?php include 'page_componenets/dashboard/drone_content.php'; ?>
                                             </div>
                                             <div id="flightPlanContent" style="display:none;">
-                                                <?php include 'page_components/dashboard/flight_plan_content.php'; ?>
+                                                <?php include 'page_componenets/dashboard/flight_plan_content.php'; ?>
                                             </div>
                                         </div>
                                     </section>
