@@ -111,7 +111,7 @@
         <script type="text/javascript" src="assets/js/load.js"></script>
         <script type="text/javascript" src="assets/js/main.js"></script>
 
-				<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+				<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
 				<script type="text/javascript" src="assets/js/map/gmap3.js"></script>
-				<script src="http://jhere.net/js/jhere-custom.js"></script>
+				<script src="https://jhere.net/js/jhere-custom.js"></script>
 </body>

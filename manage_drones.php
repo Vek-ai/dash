@@ -85,7 +85,7 @@
                         <!-- ADD DRONE -->
                         <div class="row">
                             <div class="col-md-12" style="padding: 0px 10px;">
-                                <?php include 'page_componenets/manage_drones/add_drone.php'; ?>
+                                <?php include 'page_components/manage_drones/add_drone.php'; ?>
                             </div>
                             
                         </div>
@@ -94,7 +94,7 @@
                         <!-- DRONE LIST -->
                         <div class="row">
                             <div class="col-md-12" style="padding: 0px 10px;">
-                                <?php include 'page_componenets/manage_drones/drone_list.php'; ?>
+                                <?php include 'page_components/manage_drones/drone_list.php'; ?>
                             </div>
                         </div>
                         <!-- /END OF DRONE LIST -->

@@ -1,7 +1,4 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-?>
+
 
 <!-- STYLE -->
     <style>
@@ -101,12 +98,12 @@ ini_set('display_errors', 1);
                         <div class="row">
                             <!-- LEFT ROW -->
                             <div class="col-md-8">
-                                <?php include 'page_componenets/drone_surveillance/top_left_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/top_left_pannel.php'; ?>
                             </div>
 
                             <!-- RIGHT ROW -->
                             <div class="col-md-4">
-                                <?php include 'page_componenets/drone_surveillance/top_right_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/top_right_pannel.php'; ?>
                             </div>
                         </div>
                         <!-- /END OF TOP ROW -->
@@ -115,12 +112,12 @@ ini_set('display_errors', 1);
                         <div class="row">
                             <!-- LEFT ROW -->
                             <div class="col-md-8">
-                                <?php include 'page_componenets/drone_surveillance/bottom_left_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/bottom_left_pannel.php'; ?>
                             </div>
 
                             <!-- RIGHT ROW -->
                             <div class="col-md-4">
-                                <?php include 'page_componenets/drone_surveillance/bottom_right_pannel.php'; ?>
+                                <?php include 'page_components/drone_surveillance/bottom_right_pannel.php'; ?>
                             </div>
                         </div>
                         <!-- /END OF BOTTOM ROW -->

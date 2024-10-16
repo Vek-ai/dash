@@ -10,25 +10,33 @@ include '../../../includes/db_con.php';
 header('Content-Type: application/json');
 
 try {
-    // Prepare the SQL query to fetch all flight plans ordered by plan name
-    $stmt = $conn->prepare("SELECT id, plan_name FROM flight_plans ORDER BY plan_name ASC");
+    // Get flight plan ID from request
+    $flightPlanId = $_GET['id'];
+
+    // Prepare SQL query to fetch the JSON markers field for the specified flight plan
+    $stmt = $conn->prepare("SELECT markers FROM flight_plan_markers WHERE flight_plan_id = ?");
+    $stmt->bind_param("i", $flightPlanId);
     
     // Execute the query
     $stmt->execute();
     
-    // Fetch all results
-    $result = $stmt->get_result(); // For MySQLi
-    
-    // Create an array to store the flight plans
-    $flightPlans = [];
+    // Fetch the result
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-    // Loop through the result and add each row to the flightPlans array
-    while ($row = $result->fetch_assoc()) {
-        $flightPlans[] = $row;
+    // Decode the JSON markers field
+    $markers = json_decode($row['markers'], true);
+
+    // If the markers data is properly formatted
+    if (is_array($markers)) {
+        foreach ($markers as $index => &$marker) {
+            // Assign a name based on the index, e.g., "Marker 1", "Marker 2", etc.
+            $marker['name'] = 'Marker ' . ($index + 1);
+        }
     }
 
-    // Send the data back as a JSON response
-    echo json_encode(['status' => 'success', 'data' => $flightPlans]);
+    // Send the updated markers data back as a JSON response
+    echo json_encode(['status' => 'success', 'data' => $markers]);
 
     // Close the statement
     $stmt->close();
@@ -40,4 +48,5 @@ try {
 
 // Close the database connection
 $conn->close();
+
 ?>

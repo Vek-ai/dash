@@ -53,7 +53,7 @@ include 'includes/functions.php';
                             <div class="row">
                                 <!-- MAP -->
                                 <div class="col-md-12 map-container" style="padding: 0px 10px;">
-                                    <?php include 'page_componenets/dashboard/map.php'; ?>
+                                    <?php include 'page_components\dashboard\map.php'; ?>
                                 </div>
                                 <!-- /END OF MAP -->
 
@@ -61,16 +61,16 @@ include 'includes/functions.php';
                                 <div class="col-md-12" style="padding: 0px 10px;">
                                     <section class="panel">
                                         <div class="panel-body">
-                                            <?php include 'page_componenets/dashboard/top_content.php'; ?>
+                                            <?php include 'page_components\dashboard\top_content.php'; ?>
 
                                             <div id="airportContent" style="display:block;">
-                                                <?php include 'page_componenets/dashboard/airport_content.php'; ?>
+                                                <?php include 'page_components/dashboard/airport_content.php'; ?>
                                             </div>
                                             <div id="droneContent" style="display:none;">
-                                                <?php include 'page_componenets/dashboard/drone_content.php'; ?>
+                                                <?php include 'page_components/dashboard/drone_content.php'; ?>
                                             </div>
                                             <div id="flightPlanContent" style="display:none;">
-                                                <?php include 'page_componenets/dashboard/flight_plan_content.php'; ?>
+                                                <?php include 'page_components/dashboard/flight_plan_content.php'; ?>
                                             </div>
                                         </div>
                                     </section>
@@ -102,7 +102,7 @@ include 'includes/functions.php';
     <!-- END OF RIGHT SLIDER CONTENT -->
 
     <!-- JAVASCRIPT INCLUDES -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
     <script src="assets/js/progress-bar/src/jquery.velocity.min.js"></script>
     <script src="assets/js/progress-bar/number-pb.js"></script>
     <script src="assets/js/progress-bar/progress-app.js"></script>
@@ -112,7 +112,7 @@ include 'includes/functions.php';
     <script type="text/javascript" src="assets/js/load.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <script type="text/javascript" src="assets/js/map/gmap3.js"></script>
     <script src="assets/js/jhere-custom.js"></script>
 </body>

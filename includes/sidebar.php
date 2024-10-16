@@ -106,9 +106,9 @@
                                 <span>Manage Flight Plan</span>
                             </a>
                         </li>
-
+                        
                         <li>
-                            <a class="tooltip-tip " href="pages/login.php" title="login">
+                            <a class="tooltip-tip " href="manage_flight_plan.php" title="login">
                                 <i class="icon-download"></i>
                                 <span>Login</span>
                             </a>
