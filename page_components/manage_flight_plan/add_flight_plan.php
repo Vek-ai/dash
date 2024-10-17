@@ -11,7 +11,7 @@
                             <input type="text" placeholder="Enter Flight Plan Name" name="flightPlanName" class="form-control flightPlanName" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="drone">Add Drone</label>
+                            <label for="drone">Assign Drone</label>
                             <select class="form-control drone-select" name="drone" id="drone" >
                                 <option value="">Select Drone</option>
                             </select>
