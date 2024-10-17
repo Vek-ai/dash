@@ -26,18 +26,23 @@
         console.log('Response:', response); // Log the response to check if the data structure is correct
         
         if (response.status === 'success') {
-          var markersContent = '<ul>'; // Create a list for markers
+          var markersContent = '<table class="table table-striped table-bordered">';
+          markersContent += '<thead><tr><th>Marker</th><th>Latitude</th><th>Longitude</th></tr></thead><tbody>';
 
           // Check the data format and loop through the markers
           if (Array.isArray(response.data)) {
             response.data.forEach(function(marker) {
-              markersContent += '<li>' + marker + '</li>'; // Add each marker to the list
+              markersContent += '<tr>';
+              markersContent += '<td>' + marker.name + '</td>'; // Display the marker name
+              markersContent += '<td>' + marker.latitude + '</td>'; // Display the marker latitude
+              markersContent += '<td>' + marker.longitude + '</td>'; // Display the marker longitude
+              markersContent += '</tr>';
             });
           } else {
-            markersContent += '<li>No markers found for this flight plan.</li>'; // Fallback message
+            markersContent += '<tr><td colspan="3">No markers found for this flight plan.</td></tr>'; // Fallback message
           }
 
-          markersContent += '</ul>';
+          markersContent += '</tbody></table>';
           $('#flightPlanMarkersContent').html(markersContent); // Populate modal content
           $('#flightPlanMarkersModal').modal('show'); // Show the modal
         } else {

@@ -164,35 +164,6 @@
             }
         });
     });
-
-    // Function to fetch flight plan markers and display in modal
-    function fetchFlightPlanMarkers(flightPlanId) {
-        $.ajax({
-            type: 'GET',
-            url: 'php/crud/flight_plans/get_flight_plan_markers.php', // PHP file to fetch flight plan markers
-            data: { id: flightPlanId },
-            dataType: 'json',
-            success: function (response) {
-                if (response.status === 'success') {
-                    // Populate modal with markers data
-                    var modalBody = $('#flightPlanMarkersModal .modal-body');
-                    modalBody.empty();
-
-                    response.data.forEach(function (marker) {
-                        modalBody.append('<p>Marker: ' + marker.latitude + ', ' + marker.longitude + '</p>');
-                    });
-
-                    // Show the modal
-                    $('#flightPlanMarkersModal').modal('show');
-                } else {
-                    alert('No markers found for this flight plan.');
-                }
-            },
-            error: function () {
-                alert('Error fetching flight plan markers.');
-            }
-        });
-    }
 </script>
 
 <style>
