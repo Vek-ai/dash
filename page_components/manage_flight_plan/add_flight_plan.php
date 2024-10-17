@@ -7,8 +7,14 @@
                 <div id="flightPlans">
                     <div class="row flightPlan">
                         <div class="col-md-6">
-                            <label for="flight_plan">Flight Plan Name</label>
-                            <input type="text" placeholder="Enter Flight Plan Name" name="flight_plan" class="form-control flight-plan-name" style="width: 100%;" required>
+                            <label for="flightPlanName">Flight Plan Name</label>
+                            <input type="text" placeholder="Enter Flight Plan Name" name="flightPlanName" class="form-control flightPlanName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="drone">Add Drone</label>
+                            <select class="form-control drone-select" name="drone" id="drone" >
+                                <option value="">Select Drone</option>
+                            </select>
                         </div>
                         <div class="col-md-12">
                             <h5 class="marker-label">Marker 1</h5>
@@ -38,7 +44,7 @@
 <script>
     let markerCounter = 1; // Initialize marker counter
 
-    // Function to add a new marker row
+    // Function to add a new marker (Latitude and Longitude) row
     function addFlightPlan() {
         markerCounter++; // Increment the marker counter
         const flightPlanTemplate = `
@@ -83,13 +89,14 @@
 
     // Handle form submission
     $('#droneForm').on('submit', function(event) {
-        event.preventDefault(); // Prevent the form from refreshing the page
+        event.preventDefault();
 
         let flightPlans = [];
 
         // Loop through each flight plan section and collect data
         $('#flightPlans').each(function () {
-            let flightPlanName = $(this).find('.flight-plan-name').val(); // Get flight plan name
+            let flightPlanName = $(this).find('.flightPlanName').val(); // Get flight plan name
+            let drone = $(this).find('.drone-select').val(); // Get flight plan name
             let markers = [];
 
             // For each marker under the current flight plan
@@ -105,7 +112,8 @@
 
             flightPlans.push({
                 flight_plan: flightPlanName,
-                markers: markers // Add markers under each flight plan
+                drone_id: drone,
+                markers: markers
             });
         });
 
@@ -132,6 +140,27 @@
             },
             error: function() {
                 $('#responseMessage').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET', // Specify the request type as GET
+            url: 'php/crud/drones/get_drones.php', // URL to send the request
+            success: function (response) {
+                const jsonResponse = JSON.parse(response); // Parse the JSON response
+                if (jsonResponse.status === 'success') {
+                    jsonResponse.data.forEach(drone => {
+                        const option = `<option value="${drone.id}">${drone.name}</option>`;
+                        $('.drone-select').append(option); // Populate the drone select options
+                    });
+                } else {
+                    $('#responseMessage').html('<div class="alert alert-warning">' + jsonResponse.message + '</div>');
+                }
+            },
+            error: function () {
+                $('#responseMessage').html('<div class="alert alert-danger">Failed to fetch drones. Please try again.</div>');
             }
         });
     });

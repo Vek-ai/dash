@@ -29,11 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Loop through each flight plan
         foreach ($flightPlans as $plan) {
-            // Sanitize flight plan name
-            $flightPlanName = $conn->real_escape_string($plan['flight_plan']);
+            $flightPlanName = $conn->real_escape_string($plan['flight_plan']); // Sanitize flight plan name
+            $drone_id = $conn->real_escape_string($plan['drone_id']); // Sanitize drone_id
 
             // Insert the flight plan into the flight_plans table
-            $sqlInsertPlan = "INSERT INTO flight_plans (plan_name) VALUES ('$flightPlanName')";
+            $sqlInsertPlan = "INSERT INTO flight_plans (plan_name, drone_id) VALUES ('$flightPlanName', '$drone_id')";
             if (!$conn->query($sqlInsertPlan)) {
                 throw new Exception("Error inserting flight plan: " . $conn->error);
             }
