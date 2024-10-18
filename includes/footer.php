@@ -11,3 +11,6 @@
 
 
 </div>
+
+<script src="assets\custom\js\3-dots-dropdown-menu.js"></script>
+<script type="text/javascript" src="assets/js/tag/jquery.tagsinput.js"></script>
