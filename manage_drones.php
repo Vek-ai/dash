@@ -23,9 +23,6 @@
     <link href="assets\custom\css\3-dots-dropdown-menu.css" rel="stylesheet" type="text/css" />
     <script src="assets\custom\js\3-dots-dropdown-menu.js"></script>
 
-<script src="assets\custom\js\3-dots-dropdown-menu.js"></script>
-<script type="text/javascript" src="assets/js/tag/jquery.tagsinput.js"></script>
-
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
 
