@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 
 try {
     // Prepare the SQL query to fetch all flight plans ordered by plan name
-    $stmt = $conn->prepare("SELECT id, plan_name FROM flight_plans ORDER BY plan_name ASC");
+    $stmt = $conn->prepare("SELECT * FROM flight_plans ORDER BY plan_name ASC");
     
     // Execute the query
     $stmt->execute();
