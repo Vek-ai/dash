@@ -18,9 +18,10 @@
     <link rel="stylesheet" href="assets/js/dataTable/lib/jquery.dataTables/css/DT_bootstrap.css" />
     <link rel="stylesheet" href="assets/js/dataTable/css/datatables.responsive.css" />
 
-    
-<link href="assets\custom\css\3-dots-dropdown-menu.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="assets/js/tag/jquery.tagsinput.css">   
+    <!-- 3 Dots Dropdown -->
+    <!-- NOTE: This causes problem to login if transfered to header.php -->
+    <link href="assets\custom\css\3-dots-dropdown-menu.css" rel="stylesheet" type="text/css" />
+    <script src="assets\custom\js\3-dots-dropdown-menu.js"></script>
 
 <script src="assets\custom\js\3-dots-dropdown-menu.js"></script>
 <script type="text/javascript" src="assets/js/tag/jquery.tagsinput.js"></script>
@@ -133,5 +134,4 @@
         <script src="assets/js/footable/js/footable.filter.js?v=2-0-1" type="text/javascript"></script>
         <script src="assets/js/footable/js/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
         <script src="assets/js/footable/js/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
-
 </body>

@@ -28,15 +28,12 @@
                         </select>
                     </div>
                     <div class="col-sm-6">
-                        <a href="#clear" style="margin-left:10px;" class="pull-right btn btn-info clear-filter"
-                            title="clear filter">clear</a>
-                        <a href="#api" class="pull-right btn btn-info filter-api"
-                            title="Filter using the Filter API">filter API</a>
+                        <a href="#clear" style="margin-left:10px;" class="pull-right btn btn-info clear-filter" title="clear filter">clear</a>
+                        <a href="#api" class="pull-right btn btn-info filter-api" title="Filter using the Filter API">filter API</a>
                     </div>
                 </div>
 
-                <table id="footable-res2" class="demo tablet breakpoint no-paging footable-loaded footable"
-                    data-filter="#filter" data-filter-text-only="true">
+                <table id="footable-res2" class="demo tablet breakpoint no-paging footable-loaded footable" data-filter="#filter" data-filter-text-only="true">
                     <thead>
                         <tr>
                             <th data-toggle="true">Name</th>
@@ -53,7 +50,7 @@
     </div>
 </section>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
         // Fetch drones and populate the table
         $.ajax({
@@ -89,36 +86,65 @@
                         row += `<td><span class="status-metro status-${drone.status} ${statusClass}" title="${droneStatus}">${droneStatus}</span></td>`;
 
                         // 3-dots dropdown HTML
-                        row += ` 
-                            <td>
-                                <div class="more">
-                                    <button id="more-btn-${drone.id}" class="more-btn">
-                                        <span class="more-dot"></span>
-                                        <span class="more-dot"></span>
-                                        <span class="more-dot"></span>
-                                    </button>
-                                    <div class="more-menu">
-                                        <div class="more-menu-caret">
-                                            <div class="more-menu-caret-outer"></div>
-                                            <div class="more-menu-caret-inner"></div>
-                                        </div>
-                                        <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn-${drone.id}" aria-hidden="true">
-                                            <li class="more-menu-item" role="presentation">
-                                                <button type="button" class="more-menu-btn updateBtn" role="menuitem" data-id="${drone.id}">Edit</button>
-                                            </li>
-                                            <li class="more-menu-item" role="presentation">
-                                                <button type="button" class="more-menu-btn" role="menuitem">View</button>
-                                            </li>
-                                        </ul>
+                        row += `
+                        <td>
+                            <div class="more">
+                                <button id="more-btn-${drone.id}" class="more-btn">
+                                    <span class="more-dot"></span>
+                                    <span class="more-dot"></span>
+                                    <span class="more-dot"></span>
+                                </button>
+                                <div class="more-menu">
+                                    <div class="more-menu-caret">
+                                        <div class="more-menu-caret-outer"></div>
+                                        <div class="more-menu-caret-inner"></div>
                                     </div>
+                                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn-${drone.id}" aria-hidden="true">
+                                        <li class="more-menu-item" role="presentation">
+                                            <button type="button" class="more-menu-btn" role="menuitem">Edit</button>
+                                        </li>
+                                        <li class="more-menu-item" role="presentation">
+                                            <button type="button" class="more-menu-btn" role="menuitem">View</button>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </td>`;
+                            </div>
+                        </td>`;
+                        
                         row += '</tr>';
                         droneTableBody.append(row);
+
+                        // Add dropdown functionality for this row
+                        var el = document.querySelector(`#more-btn-${drone.id}`).parentNode;
+                        var btn = el.querySelector(`#more-btn-${drone.id}`);
+                        var menu = el.querySelector('.more-menu');
+                        var visible = false;
+
+                        function showMenu(e) {
+                            e.preventDefault();
+                            if (!visible) {
+                                visible = true;
+                                el.classList.add('show-more-menu');
+                                menu.setAttribute('aria-hidden', false);
+                                document.addEventListener('mousedown', hideMenu, false);
+                            }
+                        }
+
+                        function hideMenu(e) {
+                            if (btn.contains(e.target)) {
+                                return;
+                            }
+                            if (visible) {
+                                visible = false;
+                                el.classList.remove('show-more-menu');
+                                menu.setAttribute('aria-hidden', true);
+                                document.removeEventListener('mousedown', hideMenu);
+                            }
+                        }
+
+                        btn.addEventListener('click', showMenu, false);
                     });
 
-                    // After appending rows, initialize dropdown menus
-                    initializeDropdownMenus();
                     // Initialize footable after appending rows
                     $('#footable-res2').footable();
                 } else {
@@ -129,13 +155,6 @@
                 alert('Error fetching drones.');
             }
         });
-
-        // Delegate the click event to the dynamically created .updateBtn elements
-        $('#droneTableBody').on('click', '.updateBtn', function (e) {
-        e.preventDefault();
-        
-        console.log("TEST")
-    });
 
         // Footable filtering
         $('#footable-res2').footable().bind('footable_filtering', function (e) {
@@ -164,9 +183,12 @@
         // Example filter API usage
         $('.filter-api').click(function (e) {
             e.preventDefault();
+
+            // Get the footable filter object
             var footableFilter = $('table').data('footable-filter');
 
             alert('About to filter table by "tech"');
+            // Filter by 'tech'
             footableFilter.filter('tech');
 
             // Clear the filter
@@ -177,33 +199,26 @@
     });
 </script>
 
-
 <style>
     .bg-green {
-        background-color: #45B6B0;
-        /* Light green for Active */
+        background-color: #45B6B0; /* Light green for Active */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #155724;
-        /* Dark green text for contrast */
+        color: #155724; /* Dark green text for contrast */
     }
 
     .bg-red {
-        background-color: #FF6B6B;
-        /* Light red for Disabled */
+        background-color: #FF6B6B; /* Light red for Disabled */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #721c24;
-        /* Dark red text for contrast */
+        color: #721c24; /* Dark red text for contrast */
     }
 
     .bg-gray {
-        background-color: #A8BDCF;
-        /* Light gray for Suspended */
+        background-color: #A8BDCF; /* Light gray for Suspended */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #6c757d;
-        /* Dark gray text for contrast */
+        color: #6c757d; /* Dark gray text for contrast */
     }
 
     /* Additional styling as needed */

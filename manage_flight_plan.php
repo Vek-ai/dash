@@ -18,8 +18,10 @@
     <link rel="stylesheet" href="assets/js/dataTable/lib/jquery.dataTables/css/DT_bootstrap.css" />
     <link rel="stylesheet" href="assets/js/dataTable/css/datatables.responsive.css" />
 
+    <!-- 3 Dots Dropdown -->
+    <!-- NOTE: This causes problem to login if transfered to header.php -->
     <link href="assets\custom\css\3-dots-dropdown-menu.css" rel="stylesheet" type="text/css" />
-    
+    <script src="assets\custom\js\3-dots-dropdown-menu.js"></script>
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
