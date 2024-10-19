@@ -6,14 +6,8 @@ include '../../../includes/db_con.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the JSON data from the POST request
     $flightPlans = json_decode($_POST['flight_plans'], true);
-    /* Example: $flightPlans = [{"flight_plan":"Flight Plan 1", 
-                                 "markers":[
-                                   {"latitude":"1", "longitude":"2"}, 
-                                   {"latitude":"3","longitude":"4"} 
-                                 ]} 
-                               ] */
 
-    // Check if the flightPlans array is populated and return the content for debugging
+    // Check if the flightPlans array is populated
     if (empty($flightPlans)) {
         $response = [
             'status' => 'error',
@@ -29,8 +23,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Loop through each flight plan
         foreach ($flightPlans as $plan) {
-            $flightPlanName = $conn->real_escape_string($plan['flight_plan']); // Sanitize flight plan name
-            $drone_id = $conn->real_escape_string($plan['drone_id']); // Sanitize drone_id
+            // Sanitize flight plan name and drone_id, converting drone_id to a string if it's an array
+            $flightPlanName = isset($plan['flight_plan']) && is_string($plan['flight_plan']) ? $conn->real_escape_string($plan['flight_plan']) : '';
+
+            // Check if drone_id is an array, if so convert it to a comma-separated string
+            if (isset($plan['drone_id'])) {
+                if (is_array($plan['drone_id'])) {
+                    $drone_id = implode(',', $plan['drone_id']);  // Convert array to string
+                } else {
+                    $drone_id = $plan['drone_id'];  // Use as it is if it's a string
+                }
+                $drone_id = $conn->real_escape_string($drone_id); // Sanitize drone_id
+            } else {
+                throw new Exception('Drone ID is missing.');
+            }
+
+            if (empty($flightPlanName) || empty($drone_id)) {
+                throw new Exception('Invalid flight plan name or drone ID.');
+            }
 
             // Insert the flight plan into the flight_plans table
             $sqlInsertPlan = "INSERT INTO flight_plans (plan_name, drone_id) VALUES ('$flightPlanName', '$drone_id')";
@@ -42,13 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $flightPlanId = $conn->insert_id;
 
             // Convert the markers array to a JSON-encoded string
-            $markersJson = json_encode($plan['markers']);
+            if (isset($plan['markers']) && is_array($plan['markers'])) {
+                $markersJson = json_encode($plan['markers']);
+                $markersJsonEscaped = $conn->real_escape_string($markersJson);
 
-            // Insert the markers into the flight_plan_markers table as a single entry
-            $sqlInsertMarker = "INSERT INTO flight_plan_markers (flight_plan_id, markers) 
-                                VALUES ($flightPlanId, '$markersJson')";
-            if (!$conn->query($sqlInsertMarker)) {
-                throw new Exception("Error inserting markers: " . $conn->error);
+                // Insert the markers as a JSON string into the markers field in flight_plan_markers table
+                $sqlInsertMarker = "INSERT INTO flight_plan_markers (flight_plan_id, markers) 
+                                    VALUES ('$flightPlanId', '$markersJsonEscaped')";
+                if (!$conn->query($sqlInsertMarker)) {
+                    throw new Exception("Error inserting markers: " . $conn->error);
+                }
+            } else {
+                throw new Exception("Markers data is missing or not in expected format.");
             }
         }
 

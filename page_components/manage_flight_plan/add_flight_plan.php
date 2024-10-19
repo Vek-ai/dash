@@ -1,19 +1,23 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+
 <section class="panel">
     <div class="panel-body">
         <div id="responseMessage" style="margin-top: 15px;"></div>
         <form id="droneForm">
             <h3>Add Flight Plan</h3>
-            <div id="flightPlansContainer" style="max-height: 300px; overflow-y: auto; overflow-x: hidden; border: 1px solid #ddd; padding: 10px;">
+            <div id="flightPlansContainer"
+                style="max-height: 300px; overflow-y: auto; overflow-x: hidden; border: 1px solid #ddd; padding: 10px;">
                 <div id="flightPlans">
                     <div class="row flightPlan">
                         <div class="col-md-6">
                             <label for="flightPlanName">Flight Plan Name</label>
-                            <input type="text" placeholder="Enter Flight Plan Name" name="flightPlanName" class="form-control flightPlanName" required>
+                            <input type="text" placeholder="Enter Flight Plan Name" name="flightPlanName"
+                                class="form-control flightPlanName" required>
                         </div>
                         <div class="col-md-6">
                             <label for="drone">Assign Drone</label>
-                            <select class="form-control drone-select" name="drone" id="drone" >
-                                <option value="">Select Drone</option>
+                            <select id="droneSelect" class="form-control drone-select" multiple="multiple" required>
+                                <!-- Options will be dynamically populated -->
                             </select>
                         </div>
                         <div class="col-md-12">
@@ -21,15 +25,18 @@
                         </div>
                         <div class="col-md-4">
                             <label for="latitude">Latitude</label>
-                            <input type="number" placeholder="Enter Latitude" name="latitude[]" class="form-control latitude" style="width: 100%;" step="any" required>
+                            <input type="number" placeholder="Enter Latitude" name="latitude[]"
+                                class="form-control latitude" style="width: 100%;" step="any" required>
                         </div>
                         <div class="col-md-4">
                             <label for="longitude">Longitude</label>
-                            <input type="number" placeholder="Enter Longitude" name="longitude[]" class="form-control longitude" style="width: 100%;" step="any" required>
+                            <input type="number" placeholder="Enter Longitude" name="longitude[]"
+                                class="form-control longitude" style="width: 100%;" step="any" required>
                         </div>
                         <div class="col-md-4" style="margin-top: 23px">
                             <button type="button" class="btn btn-info add-flight-plan">Add Marker</button>
-                            <button type="button" class="btn btn-danger remove-flight-plan" style="margin-left: 10px;">Remove Marker</button>
+                            <button type="button" class="btn btn-danger remove-flight-plan"
+                                style="margin-left: 10px;">Remove Marker</button>
                         </div>
                     </div>
                 </div>
@@ -65,12 +72,12 @@
                     <button type="button" class="btn btn-danger remove-flight-plan" style="margin-left: 10px;">Remove Marker</button>
                 </div>
             </div>`;
-        
+
         document.getElementById('flightPlans').insertAdjacentHTML('beforeend', flightPlanTemplate);
     }
 
     // Event listener for adding or removing markers
-    document.getElementById('flightPlans').addEventListener('click', function(event) {
+    document.getElementById('flightPlans').addEventListener('click', function (event) {
         if (event.target.classList.contains('add-flight-plan')) {
             addFlightPlan();
         } else if (event.target.classList.contains('remove-flight-plan')) {
@@ -88,7 +95,7 @@
     });
 
     // Handle form submission
-    $('#droneForm').on('submit', function(event) {
+    $('#droneForm').on('submit', function (event) {
         event.preventDefault();
 
         let flightPlans = [];
@@ -103,7 +110,7 @@
             $(this).find('.flightPlan').each(function () {
                 let latitude = $(this).find('.latitude').val();
                 let longitude = $(this).find('.longitude').val();
-                
+
                 markers.push({
                     latitude: latitude,
                     longitude: longitude
@@ -127,7 +134,7 @@
             data: {
                 flight_plans: flightPlansJSON // Send flight plans as JSON
             },
-            success: function(response) {
+            success: function (response) {
                 var jsonResponse = JSON.parse(response);
 
                 if (jsonResponse.status === 'error') {
@@ -138,30 +145,42 @@
                     markerCounter = 1; // Reset marker counter
                 }
             },
-            error: function() {
+            error: function () {
                 $('#responseMessage').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
             }
         });
     });
 
-    $(document).ready(function () {
-        $.ajax({
-            type: 'GET', // Specify the request type as GET
-            url: 'php/crud/drones/get_drones.php', // URL to send the request
-            success: function (response) {
-                const jsonResponse = JSON.parse(response); // Parse the JSON response
-                if (jsonResponse.status === 'success') {
-                    jsonResponse.data.forEach(drone => {
-                        const option = `<option value="${drone.id}">${drone.name}</option>`;
-                        $('.drone-select').append(option); // Populate the drone select options
-                    });
-                } else {
-                    $('#responseMessage').html('<div class="alert alert-warning">' + jsonResponse.message + '</div>');
-                }
-            },
-            error: function () {
-                $('#responseMessage').html('<div class="alert alert-danger">Failed to fetch drones. Please try again.</div>');
-            }
-        });
+// Initialize select2 with tag support for drone input
+$(document).ready(function () {
+    $('#droneSelect').select2({
+        placeholder: 'Select or Add Drone',
+        tags: true, // Allow custom input
+        allowClear: true, // Optional: Allow user to clear selection
+        width: '100%' // Full-width dropdown
     });
+
+    // Fetch and populate drones dynamically
+    $.ajax({
+        type: 'GET',
+        url: 'php/crud/drones/get_drones.php', // URL to get drone options
+        success: function (response) {
+            const jsonResponse = JSON.parse(response);
+            if (jsonResponse.status === 'success') {
+                jsonResponse.data.forEach(drone => {
+                    const option = new Option(drone.name, drone.id, false, false);
+                    $('#droneSelect').append(option).trigger('change');
+                });
+            } else {
+                $('#responseMessage').html('<div class="alert alert-warning">' + jsonResponse.message + '</div>');
+            }
+        },
+        error: function () {
+            $('#responseMessage').html('<div class="alert alert-danger">Failed to fetch drones. Please try again.</div>');
+        }
+    });
+});
+
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
