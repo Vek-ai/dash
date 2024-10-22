@@ -9,6 +9,7 @@
         </div>
         <div class="modal-body">
             <p>Are you sure you want to delete this drone?</p>
+            <p><strong>This action cannot be undone, and all related data will be lost forever.</strong></p>
             <div id="deleteResponseMessage" style="margin-top: 15px;"></div>
         </div>
         <div class="modal-footer">
