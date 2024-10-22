@@ -2,7 +2,7 @@
     <div class="panel-body">
         <div class="nest" id="FilteringClose">
             <div class="title-alt">
-                <h6>Flight Plans Filtering</h6>
+                <h6>Airports List</h6>
                 <div class="titleClose">
                     <a class="gone" href="#FilteringClose">
                         <span class="entypo-cancel"></span>
@@ -28,139 +28,130 @@
                         </select>
                     </div>
                     <div class="col-sm-6">
-                        <a href="#clear" style="margin-left:10px;" class="pull-right btn btn-info clear-filter" title="clear filter">clear</a>
-                        <a href="#api" class="pull-right btn btn-info filter-api" title="Filter using the Filter API">filter API</a>
+                        <a href="#clear" style="margin-left:10px;" class="pull-right btn btn-info clear-filter"
+                            title="clear filter">clear</a>
+                        <a href="#api" class="pull-right btn btn-info filter-api"
+                            title="Filter using the Filter API">filter API</a>
                     </div>
                 </div>
 
-                <table id="footable-res2" class="demo tablet breakpoint no-paging footable-loaded footable" data-filter="#filter" data-filter-text-only="true">
+                <table id="footable-res2" class="demo tablet breakpoint no-paging footable-loaded footable"
+                    data-filter="#filter" data-filter-text-only="true">
                     <thead>
                         <tr>
-                            <th data-toggle="true">Flight Plan Name</th>
+                            <th data-toggle="true">Name</th>
                             <th data-toggle="true">Action</th>
                         </tr>
                     </thead>
                     <tbody id="flightPlanTableBody">
-                        <!-- Dynamic rows will be added here -->
+                        <!-- Airport rows will be inserted here -->
                     </tbody>
                 </table>
+
             </div>
         </div>
+
+        <!-- Edit Airport Modal -->
+        <div id="editFlightPlanModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editAirportLabel"
+            aria-hidden="true">
+            <?php include 'modals/edit_flight_plan.php'; ?>
+        </div>
+
+        <!-- Delete Airport Modal -->
+        <div id="deleteAirportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteAirportLabel"
+            aria-hidden="true">
+            <?php include 'modals/delete_flight_plan.php'; ?>
+        </div>
+
     </div>
 </section>
 
-<!-- FOR FLIGHT PLAN MARKERS MODAL -->
-<div class="modal fade" id="flightPlanMarkersModal" tabindex="-1" role="dialog" aria-labelledby="flightPlanMarkersModalLabel" aria-hidden="true">
-    <?php include 'modals/flight_plan_marker_modal.php'; ?>
-</div>
-<!-- /END OF FLIGHT PLAN MARKERS MODAL -->
-
 <script type="text/javascript">
     $(document).ready(function () {
+        var flightPlanIdToDelete; // Variable to store the ID of the flight plan to be deleted
+
         // Fetch flight plans and populate the table
         $.ajax({
             type: 'GET',
-            url: 'php/crud/flight_plans/get_flight_plans.php', // The PHP file that fetches all flight plans
+            url: 'php/crud/flight_plans/get_flight_plans.php',
             dataType: 'json',
             success: function (response) {
                 if (response.status === 'success') {
+                    var flightPlansData = response.data;
                     var flightPlanTableBody = $('#flightPlanTableBody');
-                    var flightPlans = response.data;
 
-                    // Clear any existing rows
                     flightPlanTableBody.empty();
 
-                    // Loop through each flight plan and append rows to the table
-                    flightPlans.forEach(function (plan) {
-                        var row = '<tr>';
-                        // Make flight plan name clickable
-                        row += '<td class="flight-plan-name" data-id="' + plan.id + '">' + plan.plan_name + '</td>';
-                        
-                        // Existing dropdown HTML
-                        row += `
-                        <td>
-                            <div class="more">
-                                <button id="more-btn-${plan.id}" class="more-btn">
-                                    <span class="more-dot"></span>
-                                    <span class="more-dot"></span>
-                                    <span class="more-dot"></span>
-                                </button>
-                                <div class="more-menu">
-                                    <div class="more-menu-caret">
-                                        <div class="more-menu-caret-outer"></div>
-                                        <div class="more-menu-caret-inner"></div>
-                                    </div>
-                                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn-${plan.id}" aria-hidden="true">
-                                        <li class="more-menu-item" role="presentation">
-                                            <button type="button" class="more-menu-btn" role="menuitem">Edit</button>
-                                        </li>
-                                        <li class="more-menu-item" role="presentation">
-                                            <button type="button" class="more-menu-btn" role="menuitem">View</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </td>`;
-                        
-                        row += '</tr>';
-                        flightPlanTableBody.append(row);
+                    flightPlansData.forEach(function (flightPlan) {
+                        var actionButton = `
+                        <button class="btn btn-primary editBtn" data-id="${flightPlan.id}" data-name="${flightPlan.plan_name}">Edit</button>
+                        <button class="btn btn-danger deleteBtn" data-id="${flightPlan.id}">Delete</button>
+                    `;
+
+                        flightPlanTableBody.append(`
+                        <tr>
+                            <td>${flightPlan.plan_name}</td>
+                            <td>${actionButton}</td>
+                        </tr>
+                    `);
                     });
 
-                    // Add click event for flight plan name AFTER appending rows
-                    $('.flight-plan-name').on('click', function () {
-                        var flightPlanId = $(this).data('id'); // Get flight plan ID
-                        fetchFlightPlanMarkers(flightPlanId); // Call function to fetch markers
+                    // Attach click event for edit buttons
+                    $('.editBtn').click(function () {
+                        var flightPlanId = $(this).data('id');
+                        var flightPlanName = $(this).data('name');
+
+                        $('#flightPlanId').val(flightPlanId);
+                        $('#flightPlanName').val(flightPlanName);
+
+                        $('#editAirportModal').modal('show');
                     });
 
-                    // Initialize footable after appending rows
-                    $('#footable-res2').footable();
+                    // Attach click event for delete buttons
+                    $('.deleteBtn').click(function () {
+                        flightPlanIdToDelete = $(this).data('id'); // Store the ID of the flightPlan to delete
+                        $('#deleteResponseMessage').empty(); // Clear previous messages
+                        $('#deleteAirportModal').modal('show'); // Show the delete confirmation modal
+                    });
                 } else {
-                    alert('Failed to load flight plans.');
+                    $('#deleteResponseMessage').html('<div class="alert alert-warning">Failed to load flightPlans.</div>');
+                    $('#deleteAirportModal').modal('show');
                 }
             },
             error: function () {
-                alert('Error fetching flight plans.');
+                $('#deleteResponseMessage').html('<div class="alert alert-danger">Error fetching flightPlans.</div>');
+                $('#deleteAirportModal').modal('show');
             }
         });
 
-        // Footable filtering
-        $('#footable-res2').footable().bind('footable_filtering', function (e) {
-            var selected = $('.filter-status').find(':selected').text();
-            if (selected && selected.length > 0) {
-                e.filter += (e.filter && e.filter.length > 0) ? ' ' + selected : selected;
-                e.clear = !e.filter;
-            }
-        });
+        // Attach click event for the confirm delete button in the modal
+        $('#confirmDeleteBtn').click(function () {
+            if (flightPlanIdToDelete) { // Check if there's an flightPlan to delete
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/crud/flight_plans/delete_flight_plan.php',
+                    data: { id: flightPlanIdToDelete },
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#deleteResponseMessage').html('<div class="alert alert-' + (response.status === 'success' ? 'success' : 'danger') + '">' + response.message + '</div>');
+                        $('#deleteAirportModal').modal('show');
 
-        // Clear filter
-        $('.clear-filter').click(function (e) {
-            e.preventDefault();
-            $('.filter-status').val('');
-            $('table.demo').trigger('footable_clear_filter');
-        });
+                        // If successful, remove the flight plan from the table
+                        if (response.status === 'success') {
+                            $('button[data-id="' + flightPlanIdToDelete + '"]').closest('tr').remove();
+                            flightPlanIdToDelete = null; // Reset the ID after deletion
 
-        // Trigger filtering based on filter status change
-        $('.filter-status').change(function (e) {
-            e.preventDefault();
-            $('table.demo').trigger('footable_filter', {
-                filter: $('#filter').val()
-            });
-        });
-
-        // Example filter API usage
-        $('.filter-api').click(function (e) {
-            e.preventDefault();
-
-            // Get the footable filter object
-            var footableFilter = $('table').data('footable-filter');
-
-            alert('About to filter table by "active"');
-            // Filter by 'active'
-            footableFilter.filter('active');
-
-            // Clear the filter
-            if (confirm('Clear filter now?')) {
-                footableFilter.clearFilter();
+                            // Close the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#deleteAirportModal').modal('hide');
+                            }, 3000);
+                        }
+                    },
+                    error: function () {
+                        $('#deleteResponseMessage').html('<div class="alert alert-danger">An error occurred while deleting the flight plan.</div>');
+                        $('#deleteAirportModal').modal('show');
+                    }
+                });
             }
         });
     });
@@ -168,24 +159,30 @@
 
 <style>
     .bg-green {
-        background-color: #45B6B0; /* Light green for Active */
+        background-color: #45B6B0;
+        /* Light green for Active */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #155724; /* Dark green text for contrast */
+        color: #155724;
+        /* Dark green text for contrast */
     }
 
     .bg-red {
-        background-color: #FF6B6B; /* Light red for Disabled */
+        background-color: #FF6B6B;
+        /* Light red for Disabled */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #721c24; /* Dark red text for contrast */
+        color: #721c24;
+        /* Dark red text for contrast */
     }
 
     .bg-gray {
-        background-color: #A8BDCF; /* Light gray for Suspended */
+        background-color: #A8BDCF;
+        /* Light gray for Suspended */
         padding: 0.2em 0.5em;
         border-radius: 4px;
-        color: #6c757d; /* Dark gray text for contrast */
+        color: #6c757d;
+        /* Dark gray text for contrast */
     }
 
     /* Additional styling as needed */
