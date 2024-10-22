@@ -8,6 +8,15 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
     <!-- Style -->
     <link rel="stylesheet" href="assets/js/button/ladda/ladda.min.css">
+    <link rel="stylesheet" href="assets/js/dataTable/lib/jquery.dataTables/css/DT_bootstrap.css" />
+    <link rel="stylesheet" href="assets/js/dataTable/css/datatables.responsive.css" />
+
+    <link href="assets/js/footable/css/footable.core.css?v=2-0-1" rel="stylesheet" type="text/css" />
+    <link href="assets/js/footable/css/footable.standalone.css" rel="stylesheet" type="text/css" />
+    <link href="assets/js/footable/css/footable-demos.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="assets/js/dataTable/lib/jquery.dataTables/css/DT_bootstrap.css" />
+    <link rel="stylesheet" href="assets/js/dataTable/css/datatables.responsive.css" />
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="assets/ico/minus.png">
@@ -68,27 +77,25 @@
                     <div class="col-sm-12">
 
 
+                        <!-- ADD AIRPORT -->
                         <div class="row">
-                        		<!-- MAP -->
                             <div class="col-md-12" style="padding: 0px 10px;">
-                                <?php include 'page_components/manage_airports/map.php'; ?>
+                                <?php include 'page_components/manage_airports/add_airport.php'; ?>
                             </div>
-														<!-- /END OF MAP -->
-
-														<!-- CONTAINER -->
-                            <div class="col-md-12" style="padding: 0px 10px;">
-															<section class="panel">
-																<div class="panel-body">
-																	<?php include 'page_components/manage_airports/top_content.php'; ?>
-																	<?php include 'page_components/manage_airports/bottom_content.php'; ?>																			
-																</div>
-															</section>
-                            </div>
-                            <!-- /END OF CONTAINER -->
+                            
                         </div>
+                        <!-- /END OF ADD AIRPORT -->
 
+                        <!-- AIRPORT LIST -->
+                        <div class="row">
+                            <div class="col-md-12" style="padding: 0px 10px;">
+                                <?php include 'page_components/manage_airports/airport_list.php'; ?>
+                            </div>
+                        </div>
+                        <!-- /END OF AIRPORT LIST -->
 
                     </div>
+                    <!-- END OF AIRPORT SURVEILLANCE -->
 
                 </div>
 
@@ -111,7 +118,11 @@
         <script type="text/javascript" src="assets/js/load.js"></script>
         <script type="text/javascript" src="assets/js/main.js"></script>
 
-				<script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-				<script type="text/javascript" src="assets/js/map/gmap3.js"></script>
-				<script src="https://jhere.net/js/jhere-custom.js"></script>
+        <!-- GAGE -->
+        <script type="text/javascript" src="assets/js/toggle_close.js"></script>
+        <script src="assets/js/footable/js/footable.js?v=2-0-1" type="text/javascript"></script>
+        <script src="assets/js/footable/js/footable.sort.js?v=2-0-1" type="text/javascript"></script>
+        <script src="assets/js/footable/js/footable.filter.js?v=2-0-1" type="text/javascript"></script>
+        <script src="assets/js/footable/js/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
+        <script src="assets/js/footable/js/footable.paginate.js?v=2-0-1" type="text/javascript"></script>
 </body>
