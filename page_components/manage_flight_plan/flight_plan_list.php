@@ -2,7 +2,7 @@
     <div class="panel-body">
         <div class="nest" id="FilteringClose">
             <div class="title-alt">
-                <h6>Airports List</h6>
+                <h6>Flight Plan List</h6>
                 <div class="titleClose">
                     <a class="gone" href="#FilteringClose">
                         <span class="entypo-cancel"></span>
@@ -40,27 +40,34 @@
                     <thead>
                         <tr>
                             <th data-toggle="true">Name</th>
+                            <th data-toggle="true">Drone</th>
                             <th data-toggle="true">Action</th>
                         </tr>
                     </thead>
                     <tbody id="flightPlanTableBody">
-                        <!-- Airport rows will be inserted here -->
+                        <!-- Flight plan rows will be inserted here -->
                     </tbody>
                 </table>
 
             </div>
         </div>
 
-        <!-- Edit Airport Modal -->
-        <div id="editFlightPlanModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editAirportLabel"
+        <!-- Edit Flight Plan Modal -->
+        <div id="editFlightPlanModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editFlightPlanLabel"
             aria-hidden="true">
             <?php include 'modals/edit_flight_plan.php'; ?>
         </div>
 
-        <!-- Delete Airport Modal -->
-        <div id="deleteAirportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteAirportLabel"
+        <!-- Delete Flight Plan Modal -->
+        <div id="deleteFlightPlanModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteFlightPlanLabel"
             aria-hidden="true">
             <?php include 'modals/delete_flight_plan.php'; ?>
+        </div>
+
+        <!-- Flight Plan Marker Modal -->
+        <div class="modal fade" id="flightPlanMarkersModal" tabindex="-1" role="dialog"
+            aria-labelledby="flightPlanMarkersModalLabel" aria-hidden="true">
+            <?php include 'modals/flight_plan_marker_modal.php'; ?>
         </div>
 
     </div>
@@ -84,16 +91,26 @@
 
                     flightPlansData.forEach(function (flightPlan) {
                         var actionButton = `
-                        <button class="btn btn-primary editBtn" data-id="${flightPlan.id}" data-name="${flightPlan.plan_name}">Edit</button>
+                        <button class="btn btn-primary editBtn" data-id="${flightPlan.id}" data-drone_id="${flightPlan.drone_id}" data-name="${flightPlan.plan_name}">Edit</button>
                         <button class="btn btn-danger deleteBtn" data-id="${flightPlan.id}">Delete</button>
                     `;
 
+                        // Make the flight plan name clickable
                         flightPlanTableBody.append(`
-                        <tr>
-                            <td>${flightPlan.plan_name}</td>
-                            <td>${actionButton}</td>
-                        </tr>
-                    `);
+                            <tr>
+                                <td><a href="#" class="flight-plan-link" data-id="${flightPlan.id}">${flightPlan.plan_name}</a></td>
+                                <td>${flightPlan.drone_names}</td>
+                                <td>${actionButton}</td>
+                            </tr>
+                        `);
+                    });
+
+                    // Attach click event for flight plan name links
+                    $('.flight-plan-link').click(function (e) {
+                        e.preventDefault(); // Prevent the default anchor behavior
+                        var flightPlanId = $(this).data('id');
+                        // Open markers modal
+                        openMarkersModal(flightPlanId);
                     });
 
                     // Attach click event for edit buttons
@@ -104,29 +121,29 @@
                         $('#flightPlanId').val(flightPlanId);
                         $('#flightPlanName').val(flightPlanName);
 
-                        $('#editAirportModal').modal('show');
+                        $('#editFlightPlanModal').modal('show');
                     });
 
                     // Attach click event for delete buttons
                     $('.deleteBtn').click(function () {
-                        flightPlanIdToDelete = $(this).data('id'); // Store the ID of the flightPlan to delete
+                        flightPlanIdToDelete = $(this).data('id'); // Store the ID of the flight plan to delete
                         $('#deleteResponseMessage').empty(); // Clear previous messages
-                        $('#deleteAirportModal').modal('show'); // Show the delete confirmation modal
+                        $('#deleteFlightPlanModal').modal('show'); // Show the delete confirmation modal
                     });
                 } else {
-                    $('#deleteResponseMessage').html('<div class="alert alert-warning">Failed to load flightPlans.</div>');
-                    $('#deleteAirportModal').modal('show');
+                    $('#deleteResponseMessage').html('<div class="alert alert-warning">Failed to load flight plans.</div>');
+                    $('#deleteFlightPlanModal').modal('show');
                 }
             },
             error: function () {
-                $('#deleteResponseMessage').html('<div class="alert alert-danger">Error fetching flightPlans.</div>');
-                $('#deleteAirportModal').modal('show');
+                $('#deleteResponseMessage').html('<div class="alert alert-danger">Error fetching flight plans.</div>');
+                $('#deleteFlightPlanModal').modal('show');
             }
         });
 
         // Attach click event for the confirm delete button in the modal
         $('#confirmDeleteBtn').click(function () {
-            if (flightPlanIdToDelete) { // Check if there's an flightPlan to delete
+            if (flightPlanIdToDelete) { // Check if there's a flight plan to delete
                 $.ajax({
                     type: 'POST',
                     url: 'php/crud/flight_plans/delete_flight_plan.php',
@@ -134,7 +151,7 @@
                     dataType: 'json',
                     success: function (response) {
                         $('#deleteResponseMessage').html('<div class="alert alert-' + (response.status === 'success' ? 'success' : 'danger') + '">' + response.message + '</div>');
-                        $('#deleteAirportModal').modal('show');
+                        $('#deleteFlightPlanModal').modal('show');
 
                         // If successful, remove the flight plan from the table
                         if (response.status === 'success') {
@@ -143,13 +160,13 @@
 
                             // Close the modal after 3 seconds
                             setTimeout(function () {
-                                $('#deleteAirportModal').modal('hide');
+                                $('#deleteFlightPlanModal').modal('hide');
                             }, 3000);
                         }
                     },
                     error: function () {
                         $('#deleteResponseMessage').html('<div class="alert alert-danger">An error occurred while deleting the flight plan.</div>');
-                        $('#deleteAirportModal').modal('show');
+                        $('#deleteFlightPlanModal').modal('show');
                     }
                 });
             }
@@ -185,5 +202,12 @@
         /* Dark gray text for contrast */
     }
 
-    /* Additional styling as needed */
+    .flight-plan-link {
+        text-decoration: none;
+        /* Remove underline */
+        color: inherit;
+        /* Inherit the color from the parent */
+        cursor: pointer;
+        /* Optional: make it look like a clickable link */
+    }
 </style>

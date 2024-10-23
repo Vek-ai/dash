@@ -16,7 +16,7 @@
 </div>
 
 <script>
-  // Function to fetch flight plan markers and display in modal
+  // Function to fetch flight plan markers and display them in the modal
   function fetchFlightPlanMarkers(flightPlanId) {
     $.ajax({
       type: 'GET',
@@ -28,18 +28,18 @@
           // Create a table for displaying markers
           var tableHtml = '<table class="table table-striped">';
           tableHtml += '<thead><tr><th>Marker</th><th>Latitude</th><th>Longitude</th></tr></thead><tbody>';
-          
+
           // Loop through the markers and create table rows
-          $.each(response.data, function (marker, coords) {
+          $.each(response.data, function (index, marker) {
             tableHtml += '<tr>';
-            tableHtml += '<td>' + marker + '</td>'; // Display the marker name (e.g., "Marker 1")
-            tableHtml += '<td>' + coords.latitude + '</td>'; // Display the latitude
-            tableHtml += '<td>' + coords.longitude + '</td>'; // Display the longitude
+            tableHtml += '<td>Marker ' + (index + 1) + '</td>'; // Display the marker index (Marker 1, Marker 2, etc.)
+            tableHtml += '<td>' + marker.latitude + '</td>'; // Display the latitude
+            tableHtml += '<td>' + marker.longitude + '</td>'; // Display the longitude
             tableHtml += '</tr>';
           });
 
           tableHtml += '</tbody></table>';
-          
+
           // Populate the modal with the table
           $('#flightPlanMarkersContent').html(tableHtml);
 
@@ -54,4 +54,11 @@
       }
     });
   }
+
+  // Event listener for clicking on a flight plan name to load the markers
+  $(document).on('click', '.flight-plan-link', function (e) {
+    e.preventDefault();
+    var flightPlanId = $(this).data('id');
+    fetchFlightPlanMarkers(flightPlanId); // Fetch and display the markers when the name is clicked
+  });
 </script>

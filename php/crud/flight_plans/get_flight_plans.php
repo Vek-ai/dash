@@ -10,8 +10,14 @@ include '../../../includes/db_con.php';
 header('Content-Type: application/json');
 
 try {
-    // Prepare the SQL query to fetch all flight plans ordered by plan name
-    $stmt = $conn->prepare("SELECT * FROM flight_plans ORDER BY plan_name ASC");
+    // Prepare the SQL query to fetch flight plans with associated drone names
+    $stmt = $conn->prepare("
+        SELECT flight_plans.*, GROUP_CONCAT(drones.name SEPARATOR ', ') AS drone_names
+        FROM flight_plans
+        LEFT JOIN drones ON FIND_IN_SET(drones.id, flight_plans.drone_id)
+        GROUP BY flight_plans.id
+        ORDER BY flight_plans.plan_name ASC
+    ");
     
     // Execute the query
     $stmt->execute();

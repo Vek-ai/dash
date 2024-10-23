@@ -5,6 +5,9 @@ include '../../../includes/db_con.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $flight_plan_id = $_POST['flight_plan_id']; // Get the fight_plan ID from the form
     $plan_name = $_POST['flight_plan_name']; // Get the new flight plan name from the form
+    $droneData = $_POST['droneData']; // Get the new flight plan drones from the form
+
+    $droneDataString = implode(',', $droneData);
 
     // Validate input
     if (!empty($flight_plan_id) && !empty($plan_name)) {
@@ -34,8 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo json_encode(['status' => 'error', 'message' => 'Flight plan name already exists.']);
                 } else {
                     // Update the flight plan's name if the name doesn't already exist
-                    $updateStmt = $conn->prepare("UPDATE flight_plans SET plan_name = ? WHERE id = ?");
-                    $updateStmt->bind_param("si", $plan_name, $flight_plan_id);
+                    $updateStmt = $conn->prepare("UPDATE flight_plans SET plan_name = ?, drone_id = ? WHERE id = ?");
+                    $updateStmt->bind_param("ssi", $plan_name, $droneDataString, $flight_plan_id);
 
                     // Execute the statement
                     if ($updateStmt->execute()) {
