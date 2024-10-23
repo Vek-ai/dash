@@ -2,7 +2,7 @@
     <div class="panel-body">
         <div class="nest" id="FilteringClose">
             <div class="title-alt">
-                <h6>Footable Filtering</h6>
+                <h6>Drones List</h6>
                 <div class="titleClose">
                     <a class="gone" href="#FilteringClose">
                         <span class="entypo-cancel"></span>
