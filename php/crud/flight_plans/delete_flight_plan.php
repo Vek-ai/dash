@@ -6,34 +6,44 @@ include '../../../includes/db_con.php';
 if (isset($_POST['id'])) {
     $flightPlanId = $_POST['id'];
 
-    // Prepare the DELETE query
-    $query = "DELETE FROM flight_plans WHERE id = ?";
-    $stmt = $conn->prepare($query);
+    // Begin transaction
+    $conn->begin_transaction();
+    try {
+        // Prepare and execute the DELETE query for flight_plan_markers
+        $queryMarkers = "DELETE FROM flight_plan_markers WHERE flight_plan_id = ?";
+        $stmtMarkers = $conn->prepare($queryMarkers);
+        $stmtMarkers->bind_param('i', $flightPlanId);
+        $stmtMarkers->execute();
 
-    // Bind the flight plan ID to the query
-    $stmt->bind_param('i', $flightPlanId);
+        // Prepare and execute the DELETE query for flight_plans
+        $queryFlightPlan = "DELETE FROM flight_plans WHERE id = ?";
+        $stmtFlightPlan = $conn->prepare($queryFlightPlan);
+        $stmtFlightPlan->bind_param('i', $flightPlanId);
+        $stmtFlightPlan->execute();
 
-    // Execute the query
-    if ($stmt->execute()) {
-        // If the flight plan was successfully deleted
+        // Commit transaction if both deletions are successful
+        $conn->commit();
         $response = [
             'status' => 'success',
-            'message' => 'Flight Plan deleted successfully.'
+            'message' => 'Flight Plan and associated markers deleted successfully.'
         ];
-    } else {
-        // If there was an error during deletion
+    } catch (Exception $e) {
+        // Rollback transaction if there's an error
+        $conn->rollback();
         $response = [
             'status' => 'error',
-            'message' => 'Failed to delete flight plan.'
+            'message' => 'Failed to delete flight plan and markers: ' . $e->getMessage()
         ];
     }
 
-    // Close the statement and connection
-    $stmt->close();
+    // Close the statements and connection
+    $stmtMarkers->close();
+    $stmtFlightPlan->close();
     $conn->close();
 
     // Return the response as JSON
     echo json_encode($response);
+
 } else {
     // If no ID was provided in the request
     $response = [

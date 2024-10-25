@@ -53,14 +53,14 @@
         </div>
 
         <!-- Edit Flight Plan Modal -->
-        <div id="editFlightPlanModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editFlightPlanLabel"
-            aria-hidden="true">
+        <div id="editFlightPlanModal" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="editFlightPlanLabel" aria-hidden="true">
             <?php include 'modals/edit_flight_plan.php'; ?>
         </div>
 
         <!-- Delete Flight Plan Modal -->
-        <div id="deleteFlightPlanModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteFlightPlanLabel"
-            aria-hidden="true">
+        <div id="deleteFlightPlanModal" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="deleteFlightPlanLabel" aria-hidden="true">
             <?php include 'modals/delete_flight_plan.php'; ?>
         </div>
 
@@ -70,6 +70,11 @@
             <?php include 'modals/flight_plan_marker_modal.php'; ?>
         </div>
 
+        <!-- Edit Flight Plan Markers Modal -->
+        <div id="editFlightPlanMarkersModal" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="editFlightPlanMarkersModalLabel" aria-hidden="true">
+            <?php include 'modals/edit_flight_plan_markers_modal.php'; ?>
+        </div>
     </div>
 </section>
 
@@ -85,6 +90,7 @@
             success: function (response) {
                 if (response.status === 'success') {
                     var flightPlansData = response.data;
+
                     var flightPlanTableBody = $('#flightPlanTableBody');
 
                     flightPlanTableBody.empty();
@@ -103,14 +109,6 @@
                                 <td>${actionButton}</td>
                             </tr>
                         `);
-                    });
-
-                    // Attach click event for flight plan name links
-                    $('.flight-plan-link').click(function (e) {
-                        e.preventDefault(); // Prevent the default anchor behavior
-                        var flightPlanId = $(this).data('id');
-                        // Open markers modal
-                        openMarkersModal(flightPlanId);
                     });
 
                     // Attach click event for edit buttons

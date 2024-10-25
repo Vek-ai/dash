@@ -125,6 +125,10 @@ $(document).ready(function () {
       dataType: 'json',
       success: function (response) {
         if (response.status === 'success') {
+          // Update the flightPlan data in the table without refreshing
+          var flightPlanRow = $('button[data-id="' + formData.flight_plan_id + '"]').closest('tr');
+
+          flightPlanRow.find('td:eq(0)').text(formData.flight_plan_name);
           // Update the flight plan data in the table without refreshing
           var flightPlanRow = $('button[data-id="' + formData.flight_plan_id + '"]').closest('tr');
           
