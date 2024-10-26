@@ -1,6 +1,6 @@
 <?php
 include 'includes/header.php';
-include 'includes/functions.php';
+include 'php\ajax\ajax_functions.php';
 ?>
 
 <body>

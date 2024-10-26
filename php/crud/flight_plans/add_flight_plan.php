@@ -62,6 +62,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!$conn->query($sqlInsertMarker)) {
                     throw new Exception("Error inserting markers: " . $conn->error);
                 }
+
+                // Loop through each drone_id and insert data into the drone_flights table
+                if (isset($plan['drone_id']) && is_array($plan['drone_id'])) {
+                    foreach ($plan['drone_id'] as $drone_id) {
+                        $drone_id = $conn->real_escape_string($drone_id);
+
+                        // Insert data into the drone_flights table for each drone
+                        $sqlInsertDroneFlight = "INSERT INTO drone_flights (drone_id, flight_plan_id, markers) 
+                                                 VALUES ('$drone_id', '$flightPlanId', '$markersJsonEscaped')";
+                        if (!$conn->query($sqlInsertDroneFlight)) {
+                            throw new Exception("Error inserting into drone_flights: " . $conn->error);
+                        }
+                    }
+                } else {
+                    throw new Exception("Drone ID data is missing or not in expected format.");
+                }
             } else {
                 throw new Exception("Markers data is missing or not in expected format.");
             }

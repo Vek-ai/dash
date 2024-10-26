@@ -15,6 +15,12 @@ if (isset($_POST['id'])) {
         $stmtMarkers->bind_param('i', $flightPlanId);
         $stmtMarkers->execute();
 
+        // Prepare and execute the DELETE query for flight_plan_markers
+        $queryMarkers = "DELETE FROM drone_flights WHERE flight_plan_id = ?";
+        $stmtMarkers = $conn->prepare($queryMarkers);
+        $stmtMarkers->bind_param('i', $flightPlanId);
+        $stmtMarkers->execute();
+
         // Prepare and execute the DELETE query for flight_plans
         $queryFlightPlan = "DELETE FROM flight_plans WHERE id = ?";
         $stmtFlightPlan = $conn->prepare($queryFlightPlan);

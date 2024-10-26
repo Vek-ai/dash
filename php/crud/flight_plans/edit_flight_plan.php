@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($nameExists > 0) {
                     // If the new name already exists, send an error response
                     echo json_encode(['status' => 'error', 'message' => 'Flight plan name already exists.']);
-                } else {
+                } else 
                     // Update the flight plan's name if the name doesn't already exist
                     $updateStmt = $conn->prepare("UPDATE flight_plans SET plan_name = ?, drone_id = ? WHERE id = ?");
                     $updateStmt->bind_param("ssi", $plan_name, $droneDataString, $flight_plan_id);
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Execute the statement
                     if ($updateStmt->execute()) {
                         // Send a success response
-                        echo json_encode(['status' => 'success', 'message' => 'Plan updated successfully!']);
+                        echo json_encode(['status' => 'success', 'message' => 'Flight Plan updated successfully!']);
                     } else {
                         // Send an error message if something goes wrong
                         echo json_encode(['status' => 'error', 'message' => 'An error occurred. Please try again. ' . $updateStmt->error]);
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     // Close the update statement
                     $updateStmt->close();
-                }
+                
             }
         } catch (Exception $e) {
             echo json_encode(['status' => 'error', 'message' => "Error: " . $e->getMessage()]);
