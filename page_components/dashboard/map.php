@@ -1,9 +1,19 @@
 <?php
 // Check if markers data is received via POST
 if (isset($_POST['markers'])) {
-    $markers = $_POST['markers']; // Get the markers array from the POST request
+    $markersData = $_POST['markers']; // Get the markers array from the POST request flight_plan_markers and drone_flights
+
+    // Check if flight_plan_markers is in the markers data
+    if (isset($markersData['flight_plan_markers']) && isset($markersData['flight_plan_markers'])) {
+        $markers = $markersData['flight_plan_markers']; // Get the flight_plan_markers array
+        $drone_flights = $markersData['drone_flights'];
+    } else {
+        $markers = [];
+        $drone_flights = [];
+    }
 } else {
-    $markers = []; // Set an empty array if no markers are received
+    $markers = [];
+    $drone_flights = [];
 }
 ?>
 
@@ -18,13 +28,13 @@ if (isset($_POST['markers'])) {
         // Default center coordinates
         var defaultCenter = [52.500556, 13.398889]; // Fallback center
 
-        // Get markers data from PHP
-        var markers = <?php echo json_encode($markers); ?>; // Convert PHP markers array to JavaScript
+        // Get markers and drone_flights data from PHP and Convert PHP markers and drone_flights array to JavaScript
+        var markers = <?php echo json_encode($markers); ?>; // 
+        var drone_flights = <?php echo json_encode($drone_flights); ?>;
 
         // If markers are available, set the default center to the first marker's coordinates
         if (Array.isArray(markers) && markers.length > 0) {
             defaultCenter = [markers[0].latitude, markers[0].longitude];
-            console.log(markers);
         }
 
         // Initialize the map with the dynamic center and zoomed-out view
@@ -106,9 +116,36 @@ if (isset($_POST['markers'])) {
             }
         }
 
+        // Function to add markers to the map with names
+        function addDronesToMap(drone_flights) {
+            drone_flights.forEach(function(droneData){
+                var dronePosition = [droneData.markers.latitude, droneData.markers.longitude];
+
+                $('#test1').gmap3({
+                    marker: {
+                        latLng: dronePosition,
+                        options: {
+                            draggable: true,
+                            icon: {
+                                url: "assets/img/drone-icon.png", // Path to the icon
+                                scaledSize: new google.maps.Size(30, 30) // Set size (width, height) in pixels
+                            },
+                            label: {
+                                text: droneData.drone_name, // Add the name from droneData
+                                color: "#8cbeff", // Set text color for the label
+                                fontSize: "14px",
+                                fontWeight: "bold"
+                            }
+                        }
+                    }
+                })
+            })
+        }
+
         // Call the function to add markers to the map and draw the connecting line if markers are available
         if (Array.isArray(markers) && markers.length > 0) {
             addMarkersToMap(markers);
+            addDronesToMap(drone_flights);
         } else {
             console.log("No valid markers to display.");
         }

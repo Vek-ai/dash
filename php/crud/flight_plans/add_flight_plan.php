@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Loop through each flight plan
         foreach ($flightPlans as $plan) {
-            // Sanitize flight plan name and drone_id, converting drone_id to a string if it's an array
+            // Sanitize flight plan name and drone_id
             $flightPlanName = isset($plan['flight_plan']) && is_string($plan['flight_plan']) ? $conn->real_escape_string($plan['flight_plan']) : '';
 
-            // Check if drone_id is an array, if so convert it to a comma-separated string
+            // Check if drone_id is an array
             if (isset($plan['drone_id'])) {
                 if (is_array($plan['drone_id'])) {
                     $drone_id = implode(',', $plan['drone_id']);  // Convert array to string
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Get the last inserted flight_plan_id
             $flightPlanId = $conn->insert_id;
 
-            // Convert the markers array to a JSON-encoded string
+            // Convert the markers array to a JSON-encoded string for the flight_plan_markers table
             if (isset($plan['markers']) && is_array($plan['markers'])) {
                 $markersJson = json_encode($plan['markers']);
                 $markersJsonEscaped = $conn->real_escape_string($markersJson);
@@ -63,20 +63,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     throw new Exception("Error inserting markers: " . $conn->error);
                 }
 
-                // Loop through each drone_id and insert data into the drone_flights table
-                if (isset($plan['drone_id']) && is_array($plan['drone_id'])) {
-                    foreach ($plan['drone_id'] as $drone_id) {
-                        $drone_id = $conn->real_escape_string($drone_id);
+                // Get the first marker for centering
+                $firstMarker = $plan['markers'][0] ?? null;
 
-                        // Insert data into the drone_flights table for each drone
-                        $sqlInsertDroneFlight = "INSERT INTO drone_flights (drone_id, flight_plan_id, markers) 
-                                                 VALUES ('$drone_id', '$flightPlanId', '$markersJsonEscaped')";
-                        if (!$conn->query($sqlInsertDroneFlight)) {
-                            throw new Exception("Error inserting into drone_flights: " . $conn->error);
+                // Check if the first marker is available
+                if ($firstMarker) {
+                    $baseLatitude = $firstMarker['latitude'];
+                    $baseLongitude = $firstMarker['longitude'];
+
+                    // Loop through each drone_id and insert data into the drone_flights table
+                    if (isset($plan['drone_id']) && is_array($plan['drone_id'])) {
+                        $numDrones = count($plan['drone_id']);
+                        $spacing = 0.00005; // Adjust this value for spacing
+
+                        foreach ($plan['drone_id'] as $index => $drone_id) {
+                            $drone_id = $conn->real_escape_string($drone_id);
+
+                            // Calculate new longitude for each drone
+                            // Distribute drones horizontally around the first marker
+                            $newLongitude = $baseLongitude + ($spacing * ($index - ($numDrones - 1) / 2)); // Center the first marker
+                            $newLatitude = $baseLatitude; // Keep the latitude same for horizontal alignment
+
+                            // Create a new marker for the drone flight
+                            $droneMarker = [
+                                'latitude' => $newLatitude,
+                                'longitude' => $newLongitude
+                            ];
+                            $droneMarkerJson = json_encode($droneMarker);
+                            $droneMarkerJsonEscaped = $conn->real_escape_string($droneMarkerJson);
+
+                            // Insert data into the drone_flights table with the new marker
+                            $sqlInsertDroneFlight = "INSERT INTO drone_flights (drone_id, flight_plan_id, markers) 
+                                                     VALUES ('$drone_id', '$flightPlanId', '$droneMarkerJsonEscaped')";
+                            if (!$conn->query($sqlInsertDroneFlight)) {
+                                throw new Exception("Error inserting into drone_flights: " . $conn->error);
+                            }
                         }
+                    } else {
+                        throw new Exception("Drone ID data is missing or not in expected format.");
                     }
                 } else {
-                    throw new Exception("Drone ID data is missing or not in expected format.");
+                    throw new Exception("First marker data is required for centering.");
                 }
             } else {
                 throw new Exception("Markers data is missing or not in expected format.");

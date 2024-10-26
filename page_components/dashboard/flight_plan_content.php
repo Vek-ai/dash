@@ -152,7 +152,6 @@
                 success: function (response) {
                     if (response.status === 'success') {
                         var markers = response.data;
-
                         // Now send the markers data to map.php
                         $.ajax({
                             url: 'page_components/dashboard/map.php', // Path to your map.php
