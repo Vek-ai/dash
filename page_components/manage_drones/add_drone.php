@@ -1,3 +1,6 @@
+<?php 
+include 'php/ajax/ajax_functions_enhanced.php';
+?>
 
 <section class="panel">
     <div class="panel-body">
