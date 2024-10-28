@@ -1,7 +1,3 @@
-<?php 
-include 'php/ajax/ajax_functions_enhanced.php';
-?>
-
 <section class="panel">
     <div class="panel-body">
 			<div id="responseMessage" style="margin-top: 15px;"></div>
