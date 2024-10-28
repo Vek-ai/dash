@@ -4,6 +4,9 @@
         header('Location: login.php');
         exit();
     }
+
+    
+    include 'php/ajax/ajax_functions_enhanced.php';
 ?>
 <nav role="navigation" class="navbar navbar-static-top">
         <div class="container-fluid">

@@ -16,29 +16,9 @@
         $('#airportForm').on('submit', function (event) {
             event.preventDefault(); // Prevent the form from refreshing the page
 
-            // Get the form data
-            var airportName = $('#airport_name').val();
-
-            $.ajax({
-                type: 'POST',
-                url: 'php/crud/airports/add_airport.php',
-                data: { airport_name: airportName },
-                success: function (response) {
-                    // Parse the JSON response
-                    var jsonResponse = JSON.parse(response);
-
-                    if (jsonResponse.status === 'error') {
-                        $('#responseMessage').html('<div class="alert alert-warning">' + jsonResponse.message + '</div>');
-                    } else {
-                        // Display the success message
-                        $('#responseMessage').html('<div class="alert alert-success">' + jsonResponse.message + '</div>');
-                        $('#airportForm')[0].reset(); // Reset the form after success
-                    }
-                },
-                error: function () {
-                    $('#responseMessage').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
-                }
-            });
+            var formData = { airport_name: $('#airport_name').val() };
+            
+            create('POST', 'php/crud/airports/add_airport.php', formData, '#airportForm');
         });
     });
 </script>

@@ -1,3 +1,4 @@
+
 <section class="panel">
     <div class="panel-body">
 			<div id="responseMessage" style="margin-top: 15px;"></div>
@@ -15,29 +16,9 @@ $(document).ready(function () {
     $('#droneForm').on('submit', function (event) {
         event.preventDefault(); // Prevent the form from refreshing the page
 
-        // Get the form data
-        var droneName = $('#drone_name').val();
-
-        $.ajax({
-            type: 'POST',
-            url: 'php/crud/drones/add_drone.php', // Server-side script URL
-            data: { drone_name: droneName }, // Use the correct POST key 'drone_name'
-            success: function (response) {
-                // Parse the JSON response
-                var jsonResponse = JSON.parse(response);
-
-                if (jsonResponse.status === 'error') {                
-                    $('#responseMessage').html('<div class="alert alert-warning">' + jsonResponse.message + '</div>');
-                } else {
-                    // Display the success message
-                    $('#responseMessage').html('<div class="alert alert-success">' + jsonResponse.message + '</div>');
-                    $('#droneForm')[0].reset(); // Reset the form after success
-                }
-            },
-            error: function () {
-                $('#responseMessage').html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
-            }
-        });
+        var fromData = { drone_name: $('#drone_name').val() }
+        
+        create('POST', 'php/crud/drones/add_drone.php', fromData, '#droneForm');
     });
 });
 </script>
